@@ -1,0 +1,13 @@
+journal for MMP Richard Burgin
+21/02
+wrote revised project outline
+setup project and git. linked with github
+created prototype for GUI on Figma
+produced functional requirement document and documented prototype
+settled on tkinter as the gui library: best documentation and most proven, has all widgets necessary for prototype
+tested tkinter capabilities by creating simple program with buttons
+
+28/02
+complete ethics form
+review and submit revised project outline
+begin implementing prototype model screen and review PCA Wavelet code
