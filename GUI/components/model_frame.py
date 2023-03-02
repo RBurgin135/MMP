@@ -1,16 +1,15 @@
-import tkinter as tk
+from tkinter import *
 
 
 def model_frame(master):
-    m_frame = tk.LabelFrame(
+    m_frame = LabelFrame(
         master=master,
         text="This is model frame",
         padx=10,
         pady=10)
-    m_frame.pack(padx=20, pady=20)
     title = model_title(m_frame, True)
     title.pack()
-    info = tk.Label(
+    info = Label(
         master=m_frame,
         text="Lorem ipsum dolor sit am")
     info.pack()
@@ -20,20 +19,23 @@ def model_frame(master):
 
 
 def button_frame(master):
-    frame = tk.LabelFrame(
+    frame = LabelFrame(
         master=master,
         text="Button frame",
         padx=10,
         pady=10)
-    new = tk.Button(
+    new = Button(
         master=frame,
-        text="New")
-    save = tk.Button(
+        text="New",
+        command=lambda: print("new"))
+    save = Button(
         master=frame,
-        text="Save")
-    load = tk.Button(
+        text="Save",
+        command=lambda: print("save"))
+    load = Button(
         master=frame,
-        text="Load")
+        text="Load",
+        command=lambda: print("load"))
     new.grid(column=0, row=0, padx=5)
     save.grid(column=1, row=0, padx=5)
     load.grid(column=2, row=0, padx=5)
@@ -42,11 +44,11 @@ def button_frame(master):
 
 def model_title(master, data):
     if data:
-        return tk.Label(
+        return Label(
             master=master,
-            text="No Data Stored")
+            text="No Data Stored",
+        )
     else:
-        return tk.Label(
+        return Label(
             master=master,
             text="Model Name")
-
