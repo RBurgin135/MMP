@@ -11,3 +11,6 @@ tested tkinter capabilities by creating simple program with buttons
 complete ethics form
 review and submit revised project outline
 begin implementing prototype model screen and review PCA Wavelet code
+figured out how to dynamically resize all components with window resize
+saved PCA Wavelet codebase to project
+converted all into tkinter.ttk rather than tkinter for updated looks

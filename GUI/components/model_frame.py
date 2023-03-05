@@ -1,20 +1,40 @@
-from tkinter import *
+import tkinter as tk
+from tkinter.ttk import *
+from tkinter.constants import *
 
 
 def model_frame(master):
+    # components
     m_frame = LabelFrame(
         master=master,
         text="This is model frame",
-        padx=10,
-        pady=10)
+        padding=10
+    )
     title = model_title(m_frame, True)
-    title.pack()
     info = Label(
         master=m_frame,
-        text="Lorem ipsum dolor sit am")
-    info.pack()
+        text="Lorem ipsum dolor sit am"
+    )
+
+    # place
+    title.grid(
+        column=0,
+        row=0,
+        sticky=N
+    )
+    info.grid(
+        column=0,
+        row=1,
+        sticky=N + W
+    )
     b_frame = button_frame(m_frame)
-    b_frame.pack()
+    b_frame.grid(
+        column=0,
+        row=2,
+        sticky=E + W + S
+    )
+    m_frame.rowconfigure(2, weight=1)
+    m_frame.columnconfigure(0, weight=1)
     return m_frame
 
 
@@ -22,28 +42,34 @@ def button_frame(master):
     frame = LabelFrame(
         master=master,
         text="Button frame",
-        padx=10,
-        pady=10)
+        padding=10
+    )
     new = Button(
         master=frame,
         text="New",
-        command=lambda: print("new"))
+        command=lambda: print("new")
+    )
     save = Button(
         master=frame,
         text="Save",
-        command=lambda: print("save"))
+        command=lambda: print("save")
+    )
     load = Button(
         master=frame,
         text="Load",
-        command=lambda: print("load"))
-    new.grid(column=0, row=0, padx=5)
-    save.grid(column=1, row=0, padx=5)
-    load.grid(column=2, row=0, padx=5)
+        command=lambda: print("load")
+    )
+    new.grid(column=0, row=0, padx=5, sticky=W + E + N)
+    save.grid(column=1, row=0, padx=5, sticky=W + E + N)
+    load.grid(column=2, row=0, padx=5, sticky=W + E + N)
+    frame.rowconfigure(0, weight=1)
+    for c in range(3):
+        frame.columnconfigure(c, weight=1)
     return frame
 
 
-def model_title(master, data):
-    if data:
+def model_title(master, is_data):
+    if is_data:
         return Label(
             master=master,
             text="No Data Stored",
@@ -51,4 +77,5 @@ def model_title(master, data):
     else:
         return Label(
             master=master,
-            text="Model Name")
+            text="Model Name"
+        )
