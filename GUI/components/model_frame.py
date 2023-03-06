@@ -3,18 +3,16 @@ from tkinter.ttk import *
 from tkinter.constants import *
 
 
-def model_frame(master):
+def model_frame(master, is_data):
     # components
+    is_data = True
     m_frame = LabelFrame(
         master=master,
         text="This is model frame",
         padding=10
     )
-    title = model_title(m_frame, True)
-    info = Label(
-        master=m_frame,
-        text="Lorem ipsum dolor sit am"
-    )
+    title = model_title(m_frame, is_data)
+    info = model_info(m_frame, is_data)
 
     # place
     title.grid(
@@ -72,10 +70,18 @@ def model_title(master, is_data):
     if is_data:
         return Label(
             master=master,
-            text="No Data Stored",
+            text="Model Name"
         )
     else:
         return Label(
             master=master,
-            text="Model Name"
+            text="No Stored Model",
         )
+
+
+def model_info(master, is_data):
+    if not is_data: return Label(master=master)
+    return Label(
+        master=master,
+        text="info"
+    )

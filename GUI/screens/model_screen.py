@@ -5,8 +5,9 @@ from GUI.components.model_frame import model_frame
 
 
 def model_screen(master):
-    m_frame = model_frame(master)
-    a_frame = apply_frame(master)
+    is_data = False
+    m_frame = model_frame(master, is_data)
+    a_frame = apply_frame(master, is_data)
     m_frame.grid(
         column=0,
         row=0,

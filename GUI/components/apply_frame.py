@@ -3,7 +3,7 @@ from tkinter.ttk import *
 from tkinter import filedialog
 
 
-def apply_frame(master):
+def apply_frame(master, is_data):
     frame = LabelFrame(
         master=master,
         text="This is apply frame",
@@ -30,6 +30,7 @@ def file_path_button(master, text):
     file_button = Button(
         master=master,
         text=text,
+        width=100,
         command=lambda: filedialog.askopenfilename(
             initialdir="/",
             title=text,
