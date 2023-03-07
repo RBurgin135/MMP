@@ -5,30 +5,41 @@ from GUI.screens.training_screen import TrainingScreen
 class ModelInfoFrame(LabelFrame):
     def __init__(self, master, controller, data):
         super().__init__(master, text="info frame")
+        self.rowconfigure(2, weight=1)
+        self.columnconfigure(0, weight=1)
 
         # content
         is_data = True
-        title = model_title(self, is_data)
-        info = model_info(self, is_data)
 
-        title.grid(
+        # model title label
+        model_title(
+            master=self,
+            is_data=is_data
+        ).grid(
             column=0,
             row=0,
             sticky="n"
         )
-        info.grid(
+
+        # model info list
+        model_info(
+            master=self,
+            is_data=is_data
+        ).grid(
             column=0,
             row=1,
             sticky="nw"
         )
-        b_frame = ButtonFrame(self, controller)
-        b_frame.grid(
+
+        # button frame
+        ButtonFrame(
+            master=self,
+            controller=controller
+        ).grid(
             column=0,
             row=2,
             sticky="ews"
         )
-        self.rowconfigure(2, weight=1)
-        self.columnconfigure(0, weight=1)
 
 
 class ButtonFrame(LabelFrame):

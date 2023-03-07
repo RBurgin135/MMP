@@ -8,24 +8,35 @@ class ModelApplyFrame(LabelFrame):
         super().__init__(master, text="apply frame")
 
         # content
-        title = Label(
+        # title
+        Label(
             master=self,
             text="Apply Model"
-        )
-        title.pack(
+        ).pack(
             padx=10,
             pady=10
         )
-        dataset_button = file_path_button(self, "Dataset path")
-        dataset_button.pack()
-        output_button = file_path_button(self, "Output path")
-        output_button.pack()
-        type_button = output_type_button(self)
-        type_button.pack()
+
+        # dataset button
+        file_path_button(
+            master=self,
+            text="Dataset path"
+        ).pack()
+
+        # output path button
+        file_path_button(
+            master=self,
+            text="Output path"
+        ).pack()
+
+        # output type button
+        output_type_button(
+            master=self
+        ).pack()
 
 
 def file_path_button(master, text):
-    file_button = Button(
+    return Button(
         master=master,
         text=text,
         width=100,
@@ -35,7 +46,6 @@ def file_path_button(master, text):
             filetypes=(("python files", "*.py"), ("all files", "*.*"))
         )
     )
-    return file_button
 
 
 def output_type_button(master):
@@ -47,10 +57,9 @@ def output_type_button(master):
     ]
     clicked = tk.StringVar()
     clicked.set("Segmentation mask")
-    output = OptionMenu(
+    return OptionMenu(
         master,
         clicked,
         *options,
         command=lambda x: print(x)
     )
-    return output

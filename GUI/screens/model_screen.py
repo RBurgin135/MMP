@@ -1,6 +1,6 @@
 from tkinter import *
 
-from GUI.components.mode_apply_frame import ModelApplyFrame
+from GUI.components.model_apply_frame import ModelApplyFrame
 from GUI.components.model_info_frame import ModelInfoFrame
 
 
@@ -13,14 +13,24 @@ class ModelScreen(LabelFrame):
 
         # content
         is_data = False
-        m_frame = ModelInfoFrame(self, controller, is_data)
-        a_frame = ModelApplyFrame(self, controller, is_data)
-        m_frame.grid(
+
+        # model information frame
+        ModelInfoFrame(
+            master=self,
+            controller=controller,
+            data=is_data
+        ).grid(
             column=0,
             row=0,
             sticky=N + S + W + E
         )
-        a_frame.grid(
+
+        # model application frame
+        ModelApplyFrame(
+            master=self,
+            controller=controller,
+            data=is_data
+        ).grid(
             column=1,
             row=0,
             sticky=N + S + W + E
