@@ -22,7 +22,7 @@ class ModelScreen(LabelFrame):
         ).grid(
             column=0,
             row=0,
-            sticky=N + S + W + E
+            sticky="nsew"
         )
 
         # model application frame
@@ -33,5 +33,5 @@ class ModelScreen(LabelFrame):
         ).grid(
             column=1,
             row=0,
-            sticky=N + S + W + E
+            sticky="nsew"
         )
