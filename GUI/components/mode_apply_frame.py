@@ -3,27 +3,25 @@ from tkinter.ttk import *
 from tkinter import filedialog
 
 
-def apply_frame(master, is_data):
-    frame = LabelFrame(
-        master=master,
-        text="This is apply frame",
-        padding=10
-    )
-    title = Label(
-        master=frame,
-        text="Apply Model"
-    )
-    title.pack(
-        padx=10,
-        pady=10
-    )
-    dataset_button = file_path_button(frame, "Dataset path")
-    dataset_button.pack()
-    output_button = file_path_button(frame, "Output path")
-    output_button.pack()
-    type_button = output_type_button(frame)
-    type_button.pack()
-    return frame
+class ModelApplyFrame(LabelFrame):
+    def __init__(self, master, controller, data):
+        super().__init__(master, text="apply frame")
+
+        # content
+        title = Label(
+            master=self,
+            text="Apply Model"
+        )
+        title.pack(
+            padx=10,
+            pady=10
+        )
+        dataset_button = file_path_button(self, "Dataset path")
+        dataset_button.pack()
+        output_button = file_path_button(self, "Output path")
+        output_button.pack()
+        type_button = output_type_button(self)
+        type_button.pack()
 
 
 def file_path_button(master, text):
