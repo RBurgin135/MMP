@@ -17,6 +17,7 @@ converted all into tkinter.ttk rather than tkinter for updated looks
 began work on navigation between screens
 
 07/03
+tidying model screen to look better
 finish constructing training screen
 tidy up PCA Wavelet codebase
 begin linking PCA Wavelet behaviour into GUI:
