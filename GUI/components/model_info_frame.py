@@ -1,5 +1,6 @@
 from tkinter.ttk import *
-from GUI.screens.training_screen import TrainingScreen
+
+from GUI.screens import navigation
 
 
 class ModelInfoFrame(LabelFrame):
@@ -50,7 +51,7 @@ class ButtonFrame(LabelFrame):
         new = Button(
             master=self,
             text="New",
-            command=lambda: controller.show_frame(TrainingScreen)
+            command=lambda: controller.navigate("training")
         )
         save = Button(
             master=self,

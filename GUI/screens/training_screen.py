@@ -1,6 +1,5 @@
 from tkinter import *
 
-import GUI.screens.model_screen
 from GUI.components.top_nav_bar import TopNavigationBar, NavButtonData
 
 
@@ -18,7 +17,7 @@ class TrainingScreen(LabelFrame):
             title="Train New Model",
             nav_button=NavButtonData(
                 text="back",
-                command=controller.show_frame(GUI.screens.model_screen.ModelScreen)
+                command=lambda: controller.navigate("model")
             )
         ).grid(
             column=0,

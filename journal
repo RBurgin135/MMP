@@ -14,3 +14,11 @@ begin implementing prototype model screen and review PCA Wavelet code
 figured out how to dynamically resize all components with window resize
 saved PCA Wavelet codebase to project
 converted all into tkinter.ttk rather than tkinter for updated looks
+began work on navigation between screens
+
+07/03
+finish constructing training screen
+tidy up PCA Wavelet codebase
+begin linking PCA Wavelet behaviour into GUI:
+    firstly by allowing the user to load in datasets from machine
+    then allow model to be trained on that dataset

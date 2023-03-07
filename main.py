@@ -1,8 +1,7 @@
 from tkinter import *
 from ctypes import windll
 
-from GUI.screens.model_screen import ModelScreen
-from GUI.screens.training_screen import TrainingScreen
+from GUI.screens import navigation
 
 windll.shcore.SetProcessDpiAwareness(1)
 
@@ -20,17 +19,17 @@ class MMP(Tk):
 
         # initialise frames to empty set
         self.frames = {}
-        for Screen in (ModelScreen, TrainingScreen):
+        for Screen in navigation.Screens.values():
             frame = Screen(self, self)
-            self.frames[Screen] = frame
             frame.grid(row=0, column=0, sticky="nsew")
+            self.frames[Screen] = frame
 
         # show first screen
-        self.show_frame(ModelScreen)
+        self.navigate("model")
 
-    def show_frame(self, key):
-        frame = self.frames[key]
-        frame.tkraise()
+    def navigate(self, route):
+        frame = navigation.Screens[route]
+        self.frames[frame].tkraise()
 
 
 if __name__ == "__main__":
