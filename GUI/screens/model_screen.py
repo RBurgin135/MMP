@@ -1,6 +1,6 @@
 from tkinter import *
 
-from GUI.components.mode_button_frame import ModelButtonFrame
+from GUI.components.model_button_frame import ModelButtonFrame
 from GUI.components.model_apply_frame import ModelApplyFrame
 from GUI.components.model_info_frame import ModelInfoFrame
 
