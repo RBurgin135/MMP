@@ -3,7 +3,7 @@ from tkinter.ttk import *
 from PIL import ImageTk
 
 from GUI.components.path_frame import PathFrame
-from GUI.components.top_nav_bar import TopNavigationBar, NavButtonData
+from GUI.components.top_bar import TopBar
 
 
 class TrainingScreen(LabelFrame):
@@ -11,14 +11,10 @@ class TrainingScreen(LabelFrame):
         super().__init__(master, text="training screen", *args, **kwargs)
 
         # top navigation bar
-        TopNavigationBar(
+        TopBar(
             master=self,
             controller=controller,
             title="Train New Model",
-            nav_button=NavButtonData(
-                text="Back",
-                command=lambda: controller.navigate("model")
-            )
         ).pack(fill="both")
 
         # content
@@ -108,7 +104,7 @@ class ActionButtonFrame(LabelFrame):
         Button(
             master=self,
             text="Train",
-            command=lambda: print("train")
+            command=lambda: controller.navigate("process")
         ).grid(
             column=1,
             row=0,

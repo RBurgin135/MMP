@@ -72,7 +72,7 @@ class ActionButtonFrame(LabelFrame):
         Button(
             master=self,
             text="Begin",
-            command=lambda: print("train")
+            command=lambda: controller.navigate("process")
         ).grid(
             column=1,
             row=0,
