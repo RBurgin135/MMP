@@ -1,16 +1,19 @@
 import tkinter as tk
 from tkinter.ttk import *
-from tkinter import filedialog
+
+from GUI.components.path_frame import PathFrame
 
 
 class ModelApplyFrame(LabelFrame):
-    def __init__(self, master, controller, data):
-        super().__init__(master, text="apply frame")
+    def __init__(self, master, controller, data, *args, **kwargs):
+        super().__init__(master, text="apply frame", *args, **kwargs)
 
         # content
         # title
+        content = LabelFrame(master=self, text="content")
+        content.pack(fill="both")
         Label(
-            master=self,
+            master=content,
             text="Apply Model"
         ).pack(
             padx=10,
@@ -18,39 +21,69 @@ class ModelApplyFrame(LabelFrame):
         )
 
         # dataset button
-        file_path_button(
-            master=self,
-            text="Dataset path"
+        PathFrame(
+            master=content,
+            controller=controller,
+            text="Dataset Path: "
         ).pack()
 
         # output path button
-        file_path_button(
-            master=self,
-            text="Output path"
+        PathFrame(
+            master=content,
+            controller=controller,
+            text="Output Path: "
         ).pack()
 
         # output type button
         output_type_button(
-            master=self
+            master=content
         ).pack()
 
-
-def file_path_button(master, text):
-    return Button(
-        master=master,
-        text=text,
-        width=100,
-        command=lambda: filedialog.askopenfilename(
-            initialdir="/",
-            title=text,
-            filetypes=(("python files", "*.py"), ("all files", "*.*"))
+        # action button frame
+        ActionButtonFrame(
+            master=self,
+            controller=controller
+        ).pack(
+            side="bottom",
+            fill="both"
         )
-    )
+
+
+class ActionButtonFrame(LabelFrame):
+    def __init__(self, master, controller, *args, **kwargs):
+        super().__init__(master, text="action button frame", *args, **kwargs)
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+
+        # content
+        # set to defaults button
+        Button(
+            master=self,
+            text="Set to Defaults",
+            command=lambda: print("defaults")
+        ).grid(
+            column=0,
+            row=0,
+            sticky="ne"
+        )
+
+        # train button
+        Button(
+            master=self,
+            text="Begin",
+            command=lambda: print("train")
+        ).grid(
+            column=1,
+            row=0,
+            sticky="nw"
+        )
 
 
 def output_type_button(master):
+    description = "Output type"
     options = [
-        "Output type",
+        description,
         "Segmentation mask",
         "Point map",
         "etc"

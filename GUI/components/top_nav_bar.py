@@ -2,8 +2,8 @@ from tkinter.ttk import *
 
 
 class TopNavigationBar(LabelFrame):
-    def __init__(self, master, controller, title, nav_button=None):
-        super().__init__(master, text="top navigation bar")
+    def __init__(self, master, controller, title, nav_button=None, *args, **kwargs):
+        super().__init__(master, text="top navigation bar", *args, **kwargs)
 
         # content
         # navigation button
@@ -15,7 +15,8 @@ class TopNavigationBar(LabelFrame):
                 command=nav_button.command
             ).grid(
                 column=0,
-                row=0
+                row=0,
+                padx=10
             )
 
         # title
