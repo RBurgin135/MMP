@@ -1,6 +1,4 @@
-from tkinter import PhotoImage
 from tkinter.ttk import *
-from PIL import ImageTk
 
 from GUI.components.path_frame import PathFrame
 from GUI.components.top_bar import TopBar
@@ -85,19 +83,31 @@ class ActionButtonFrame(LabelFrame):
     def __init__(self, master, controller, *args, **kwargs):
         super().__init__(master, text="action button frame", *args, **kwargs)
         self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
+        self.columnconfigure(0, weight=5)
         self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=5)
 
         # content
+        # back
+        Button(
+            master=self,
+            text="Back",
+            command=lambda: controller.navigate("model")
+        ).grid(
+            column=0,
+            row=0,
+            sticky="ne"
+        )
+
         # set to defaults button
         Button(
             master=self,
             text="Set to Defaults",
             command=lambda: print("defaults")
         ).grid(
-            column=0,
+            column=1,
             row=0,
-            sticky="ne"
+            sticky="n"
         )
 
         # train button
@@ -106,7 +116,7 @@ class ActionButtonFrame(LabelFrame):
             text="Train",
             command=lambda: controller.navigate("process")
         ).grid(
-            column=1,
+            column=2,
             row=0,
             sticky="nw"
         )
