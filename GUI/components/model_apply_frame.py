@@ -16,8 +16,9 @@ class ModelApplyFrame(LabelFrame):
             master=content,
             text="Apply Model"
         ).pack(
-            padx=10,
-            pady=10
+            padx=5,
+            pady=10,
+            anchor="w"
         )
 
         # dataset button
@@ -25,19 +26,31 @@ class ModelApplyFrame(LabelFrame):
             master=content,
             controller=controller,
             text="Dataset Path: "
-        ).pack()
+        ).pack(
+            padx=10,
+            pady=3,
+            anchor="w"
+        )
 
         # output path button
         PathFrame(
             master=content,
             controller=controller,
             text="Output Path: "
-        ).pack()
+        ).pack(
+            padx=10,
+            pady=3,
+            anchor="w"
+        )
 
         # output type button
         output_type_button(
             master=content
-        ).pack()
+        ).pack(
+            padx=10,
+            pady=3,
+            anchor="w"
+        )
 
         # action button frame
         ActionButtonFrame(
