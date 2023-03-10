@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter.ttk import *
 
 from GUI.components.path_frame import PathFrame
@@ -5,7 +6,7 @@ from GUI.components.top_bar import TopBar
 
 
 class TrainingScreen(LabelFrame):
-    def __init__(self, master, controller, *args, **kwargs):
+    def __init__(self, master, controller, current_model, *args, **kwargs):
         super().__init__(master, text="training screen", *args, **kwargs)
 
         # top navigation bar
@@ -22,6 +23,7 @@ class TrainingScreen(LabelFrame):
         title_gap = 10
         sub_gap = 0
         # model name
+        model_name = tk.StringVar()
         Label(
             master=content,
             text="Model Name:"
@@ -32,7 +34,8 @@ class TrainingScreen(LabelFrame):
         )
         Entry(
             master=content,
-            width=50
+            width=50,
+            textvariable=model_name
         ).pack(
             anchor="w",
             padx=indent*2,
@@ -49,20 +52,24 @@ class TrainingScreen(LabelFrame):
             pady=title_gap
         )
         # inputs
+        input_path = tk.StringVar()
         PathFrame(
             master=content,
             controller=controller,
-            text="Inputs Path: "
+            text="Inputs Path: ",
+            text_variable=input_path
         ).pack(
             anchor="w",
             padx=indent * 2,
             pady=sub_gap
         )
         # labels
+        label_path = tk.StringVar()
         PathFrame(
             master=content,
             controller=controller,
-            text="Labels Path: "
+            text="Labels Path: ",
+            text_variable=label_path
         ).pack(
             anchor="w",
             padx=indent * 2,
@@ -72,7 +79,9 @@ class TrainingScreen(LabelFrame):
         # action buttons
         ActionButtonFrame(
             master=self,
-            controller=controller
+            controller=controller,
+            variables=(model_name, input_path, label_path),
+            current_model=current_model
         ).pack(
             side="bottom",
             fill="both"
@@ -80,7 +89,7 @@ class TrainingScreen(LabelFrame):
 
 
 class ActionButtonFrame(LabelFrame):
-    def __init__(self, master, controller, *args, **kwargs):
+    def __init__(self, master, controller, variables, current_model, *args, **kwargs):
         super().__init__(master, text="action button frame", *args, **kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=5)
@@ -114,7 +123,7 @@ class ActionButtonFrame(LabelFrame):
         Button(
             master=self,
             text="Train",
-            command=lambda: controller.navigate("process")
+            command=lambda: current_model.create_new_model(variables)
         ).grid(
             column=2,
             row=0,

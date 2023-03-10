@@ -22,10 +22,12 @@ class ModelApplyFrame(LabelFrame):
         )
 
         # dataset button
+        dataset_path = tk.StringVar()
         PathFrame(
             master=content,
             controller=controller,
-            text="Dataset Path: "
+            text="Dataset Path: ",
+            text_variable=dataset_path
         ).pack(
             padx=10,
             pady=3,
@@ -33,10 +35,12 @@ class ModelApplyFrame(LabelFrame):
         )
 
         # output path button
+        output_path = tk.StringVar()
         PathFrame(
             master=content,
             controller=controller,
-            text="Output Path: "
+            text="Output Path: ",
+            text_variable=output_path
         ).pack(
             padx=10,
             pady=3,

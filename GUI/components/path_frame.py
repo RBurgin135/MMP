@@ -3,7 +3,7 @@ from GUI.components.util import FilePathButton
 
 
 class PathFrame(Frame):
-    def __init__(self, master, controller, text, *args, **kwargs):
+    def __init__(self, master, controller, text, text_variable, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
@@ -19,7 +19,8 @@ class PathFrame(Frame):
         )
         Entry(
             master=self,
-            width=50
+            width=50,
+            textvariable=text_variable
         ).grid(
             column=1,
             row=0

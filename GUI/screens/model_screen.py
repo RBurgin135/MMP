@@ -6,7 +6,7 @@ from GUI.components.model_info_frame import ModelInfoFrame
 
 
 class ModelScreen(LabelFrame):
-    def __init__(self, master, controller, *args, **kwargs):
+    def __init__(self, master, controller, current_model, *args, **kwargs):
         super().__init__(master, text="model screen", *args, **kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)

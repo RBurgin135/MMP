@@ -2,6 +2,7 @@ from tkinter import *
 from ctypes import windll
 
 from GUI.screens import navigation
+from Model.model import Model
 
 windll.shcore.SetProcessDpiAwareness(1)
 
@@ -17,10 +18,17 @@ class MMP(Tk):
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
 
+        # instantiate data class
+        current_model = Model(self)
+
         # initialise frames to empty set
         self.frames = {}
         for Screen in navigation.Screens.values():
-            frame = Screen(self, self)
+            frame = Screen(
+                master=self,
+                controller=self,
+                current_model=current_model
+            )
             frame.grid(row=0, column=0, sticky="nsew")
             self.frames[Screen] = frame
 
