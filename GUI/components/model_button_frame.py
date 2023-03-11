@@ -1,9 +1,17 @@
 from tkinter.ttk import *
+from tkinter import filedialog
 
 
 class ModelButtonFrame(LabelFrame):
     def __init__(self, master, controller):
         super().__init__(master, text="button frame")
+
+        # filesystem info
+        filetypes = (
+            ('Tensorflow Files', '*.tf'),
+            ('All files', '*.*')
+        )
+        initial_dir = ""
 
         # content
         new = Button(
@@ -14,12 +22,20 @@ class ModelButtonFrame(LabelFrame):
         save = Button(
             master=self,
             text="Save",
-            command=lambda: print("save")
+            command=lambda: filedialog.asksaveasfilename(
+                title="Save a model",
+                initialdir=initial_dir,
+                filetypes=filetypes
+            )
         )
         load = Button(
             master=self,
             text="Load",
-            command=lambda: print("load")
+            command=lambda: filedialog.askopenfilename(
+                title="Load a model",
+                initialdir=initial_dir,
+                filetypes=filetypes
+            )
         )
         new.grid(column=0, row=0, padx=5, sticky="wen")
         save.grid(column=1, row=0, padx=5, sticky="wen")
