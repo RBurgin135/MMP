@@ -1,5 +1,5 @@
 from tkinter.ttk import *
-from GUI.components.util import FilePathButton
+from GUI.components.util import DirectoryPathButton
 
 
 class PathFrame(Frame):
@@ -25,10 +25,10 @@ class PathFrame(Frame):
             column=1,
             row=0
         )
-        FilePathButton(
+        DirectoryPathButton(
             master=self,
             text="Find",
-            filetypes=(("python files", "*.py"), ("all files", "*.*"))
+            text_variable=text_variable
         ).grid(
             column=2,
             row=0
