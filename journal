@@ -20,7 +20,10 @@ began work on navigation between screens
 finished construction of model screen
 finished construction training screen
 finished construction of process screen
-added file path widget to allow easy loading in of directories
+polished GUI code to make it more readable and maintainable
 begin linking PCA Wavelet behaviour into GUI:
-    firstly by allowing the user to load in datasets from machine
-    then allow model to be trained on that dataset
+    created Model class to hold all model related information
+    save and load buttons now open system dialogs
+    input widgets now take inputs and store them, ready to be used with model
+    set to default button functional
+    model is built using the inputs from the user in the training screen

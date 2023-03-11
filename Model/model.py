@@ -3,6 +3,7 @@
 
 class Model:
     def __init__(self, controller):
+        self.has_data = False
         self.controller = controller
         self.pca_wavelet_model = None
         self.name = None
@@ -11,6 +12,7 @@ class Model:
 
     def create_new_model(self, variables):
         print("create new model")
+        self.has_data = True
         self.name = variables[0]
         self.input_set = variables[1]
         self.label_set = variables[2]

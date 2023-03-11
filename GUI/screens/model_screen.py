@@ -28,7 +28,8 @@ class ModelScreen(LabelFrame):
         # button frame
         ModelButtonFrame(
             master=self,
-            controller=controller
+            controller=controller,
+            current_model=current_model
         ).grid(
             column=0,
             row=0,

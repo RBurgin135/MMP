@@ -3,8 +3,8 @@ from tkinter import filedialog
 
 
 class ModelButtonFrame(LabelFrame):
-    def __init__(self, master, controller):
-        super().__init__(master, text="button frame")
+    def __init__(self, master, controller, current_model, *args, **kwargs):
+        super().__init__(master, text="button frame", *args, **kwargs)
 
         # filesystem info
         filetypes = (
@@ -26,7 +26,8 @@ class ModelButtonFrame(LabelFrame):
                 title="Save a model",
                 initialdir=initial_dir,
                 filetypes=filetypes
-            )
+            ),
+            state="normal" if current_model.has_data else"disabled"
         )
         load = Button(
             master=self,
