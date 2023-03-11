@@ -25,3 +25,18 @@ class FilePathButton(Button):
                 filetypes=filetypes
             ))
             , *args, **kwargs)
+
+
+class SetToDefaultsButton(Button):
+    def __init__(self, variables, *args, **kwargs):
+        super().__init__(
+            text="Set to Defaults",
+            command=lambda: reset(variables),
+            *args,
+            **kwargs
+        )
+
+
+def reset(variables):
+    for v in variables:
+        v.set("")

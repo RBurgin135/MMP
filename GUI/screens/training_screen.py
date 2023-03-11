@@ -3,6 +3,7 @@ from tkinter.ttk import *
 
 from GUI.components.path_frame import PathFrame
 from GUI.components.top_bar import TopBar
+from GUI.components.util import SetToDefaultsButton
 
 
 class TrainingScreen(LabelFrame):
@@ -80,7 +81,11 @@ class TrainingScreen(LabelFrame):
         ActionButtonFrame(
             master=self,
             controller=controller,
-            variables=(model_name, input_path, label_path),
+            variables=[
+                model_name,
+                input_path,
+                label_path
+            ],
             current_model=current_model
         ).pack(
             side="bottom",
@@ -109,10 +114,9 @@ class ActionButtonFrame(LabelFrame):
         )
 
         # set to defaults button
-        Button(
+        SetToDefaultsButton(
             master=self,
-            text="Set to Defaults",
-            command=lambda: print("defaults")
+            variables=variables
         ).grid(
             column=1,
             row=0,

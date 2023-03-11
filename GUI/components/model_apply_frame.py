@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter.ttk import *
 
 from GUI.components.path_frame import PathFrame
+from GUI.components.util import SetToDefaultsButton
 
 
 class ModelApplyFrame(LabelFrame):
@@ -48,8 +49,10 @@ class ModelApplyFrame(LabelFrame):
         )
 
         # output type button
-        output_type_button(
-            master=content
+        output_type = tk.StringVar()
+        OutputTypeFrame(
+            master=content,
+            text_variable=output_type
         ).pack(
             padx=10,
             pady=3,
@@ -59,7 +62,12 @@ class ModelApplyFrame(LabelFrame):
         # action button frame
         ActionButtonFrame(
             master=self,
-            controller=controller
+            controller=controller,
+            variables=[
+                dataset_path,
+                output_path,
+                output_type
+            ]
         ).pack(
             side="bottom",
             fill="both"
@@ -67,7 +75,7 @@ class ModelApplyFrame(LabelFrame):
 
 
 class ActionButtonFrame(LabelFrame):
-    def __init__(self, master, controller, *args, **kwargs):
+    def __init__(self, master, controller, variables, *args, **kwargs):
         super().__init__(master, text="action button frame", *args, **kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
@@ -75,10 +83,9 @@ class ActionButtonFrame(LabelFrame):
 
         # content
         # set to defaults button
-        Button(
+        SetToDefaultsButton(
             master=self,
-            text="Set to Defaults",
-            command=lambda: print("defaults")
+            variables=variables
         ).grid(
             column=0,
             row=0,
@@ -97,19 +104,38 @@ class ActionButtonFrame(LabelFrame):
         )
 
 
-def output_type_button(master):
-    description = "Output type"
-    options = [
-        description,
-        "Segmentation mask",
-        "Point map",
-        "etc"
-    ]
-    clicked = tk.StringVar()
-    clicked.set("Segmentation mask")
-    return OptionMenu(
-        master,
-        clicked,
-        *options,
-        command=lambda x: print(x)
-    )
+class OutputTypeFrame(Frame):
+    def __init__(self, text_variable, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        # options
+        options = [
+            "",
+            "Segmentation mask",
+            "Point map",
+            "etc"
+        ]
+        text_variable.set(options[0])
+
+        # content
+        # label
+        Label(
+            master=self,
+            text="Output Type:"
+        ).grid(
+            column=0,
+            row=0
+        )
+        # option menu
+        OptionMenu(
+            self,
+            text_variable,
+            *options,
+            command=lambda x: print(x)
+        ).grid(
+            column=1,
+            row=0
+        )
+
