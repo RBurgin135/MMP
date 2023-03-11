@@ -11,7 +11,7 @@ class ModelInfoFrame(LabelFrame):
         is_data = True
 
         # model title label
-        model_title(
+        ModelTitle(
             master=self,
             is_data=is_data
         ).grid(
@@ -21,7 +21,7 @@ class ModelInfoFrame(LabelFrame):
         )
 
         # model info list
-        model_info(
+        ModelInfo(
             master=self,
             is_data=is_data
         ).grid(
@@ -31,23 +31,32 @@ class ModelInfoFrame(LabelFrame):
         )
 
 
-def model_title(master, is_data):
-    if is_data:
-        return Label(
-            master=master,
-            text="Model Name"
-        )
-    else:
-        return Label(
-            master=master,
-            text="No Stored Model",
-        )
+class ModelTitle(Label):
+    def __init__(self, is_data, *args, **kwargs):
+        if is_data:
+            super().__init__(
+                text="Model Name",
+                *args,
+                **kwargs
+            )
+        else:
+            super().__init__(
+                text="No Stored Model",
+                *args,
+                **kwargs
+            )
 
 
-def model_info(master, is_data):
-    if not is_data:
-        return Label(master=master)
-    return Label(
-        master=master,
-        text="info"
-    )
+class ModelInfo(Label):
+    def __init__(self, is_data, *args, **kwargs):
+        if not is_data:
+            super().__init__(
+                *args,
+                **kwargs
+            )
+        else:
+            super().__init__(
+                text="info",
+                *args,
+                **kwargs
+            )
