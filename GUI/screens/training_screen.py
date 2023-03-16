@@ -7,8 +7,8 @@ from GUI.components.util import SetToDefaultsButton
 
 
 class TrainingScreen(LabelFrame):
-    def __init__(self, master, controller, current_model, *args, **kwargs):
-        super().__init__(master, text="training screen", *args, **kwargs)
+    def __init__(self, master, controller, current_model, **kwargs):
+        super().__init__(master, text="training screen", **kwargs)
 
         # top navigation bar
         TopBar(
@@ -94,8 +94,8 @@ class TrainingScreen(LabelFrame):
 
 
 class ActionButtonFrame(LabelFrame):
-    def __init__(self, master, controller, variables, current_model, *args, **kwargs):
-        super().__init__(master, text="action button frame", *args, **kwargs)
+    def __init__(self, master, controller, variables, current_model, **kwargs):
+        super().__init__(master, text="action button frame", **kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=5)
         self.columnconfigure(1, weight=1)

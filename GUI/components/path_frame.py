@@ -3,8 +3,8 @@ from GUI.components.util import DirectoryPathButton
 
 
 class PathFrame(Frame):
-    def __init__(self, master, controller, text, text_variable, *args, **kwargs):
-        super().__init__(master, *args, **kwargs)
+    def __init__(self, master, controller, text, text_variable, **kwargs):
+        super().__init__(master, **kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)

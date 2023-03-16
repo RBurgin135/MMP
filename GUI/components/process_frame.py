@@ -2,8 +2,8 @@ from tkinter.ttk import *
 
 
 class ProcessFrame(LabelFrame):
-    def __init__(self, master, controller, *args, **kwargs):
-        super().__init__(master, text="process frame", *args, **kwargs)
+    def __init__(self, master, controller, **kwargs):
+        super().__init__(master, text="process frame", **kwargs)
 
         # content
         Button(

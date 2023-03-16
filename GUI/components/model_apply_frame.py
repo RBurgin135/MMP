@@ -6,8 +6,8 @@ from GUI.components.util import SetToDefaultsButton
 
 
 class ModelApplyFrame(LabelFrame):
-    def __init__(self, master, controller, data, *args, **kwargs):
-        super().__init__(master, text="apply frame", *args, **kwargs)
+    def __init__(self, master, controller, data, **kwargs):
+        super().__init__(master, text="apply frame", **kwargs)
 
         # content
         # title
@@ -75,8 +75,8 @@ class ModelApplyFrame(LabelFrame):
 
 
 class ActionButtonFrame(LabelFrame):
-    def __init__(self, master, controller, variables, *args, **kwargs):
-        super().__init__(master, text="action button frame", *args, **kwargs)
+    def __init__(self, master, controller, variables, **kwargs):
+        super().__init__(master, text="action button frame", **kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -105,8 +105,8 @@ class ActionButtonFrame(LabelFrame):
 
 
 class OutputTypeFrame(Frame):
-    def __init__(self, text_variable, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, text_variable, **kwargs):
+        super().__init__(**kwargs)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)

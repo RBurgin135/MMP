@@ -2,8 +2,8 @@ from tkinter.ttk import *
 
 
 class ModelInfoFrame(LabelFrame):
-    def __init__(self, master, controller, data):
-        super().__init__(master, text="info frame", style='Custom.TFrame')
+    def __init__(self, master, controller, data, **kwargs):
+        super().__init__(master, text="info frame", style='Custom.TFrame', **kwargs)
         self.rowconfigure(2, weight=1)
         self.columnconfigure(0, weight=1)
 
@@ -48,15 +48,13 @@ class ModelTitle(Label):
 
 
 class ModelInfo(Label):
-    def __init__(self, is_data, *args, **kwargs):
+    def __init__(self, is_data, **kwargs):
         if not is_data:
             super().__init__(
-                *args,
                 **kwargs
             )
         else:
             super().__init__(
                 text="info",
-                *args,
                 **kwargs
             )

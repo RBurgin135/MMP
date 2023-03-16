@@ -3,8 +3,8 @@ from tkinter import filedialog
 
 
 class ModelButtonFrame(LabelFrame):
-    def __init__(self, master, controller, current_model, *args, **kwargs):
-        super().__init__(master, text="button frame", style='Custom.TFrame', *args, **kwargs)
+    def __init__(self, master, controller, current_model, **kwargs):
+        super().__init__(master, text="button frame", style='Custom.TFrame', **kwargs)
 
         # filesystem info
         filetypes = (

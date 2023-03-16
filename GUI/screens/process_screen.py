@@ -6,8 +6,8 @@ from GUI.components.top_bar import TopBar
 
 
 class ProcessScreen(LabelFrame):
-    def __init__(self, master, controller, current_model, *args, **kwargs):
-        super().__init__(master, text="process screen", *args, **kwargs)
+    def __init__(self, master, controller, current_model, **kwargs):
+        super().__init__(master, text="process screen", **kwargs)
         self.rowconfigure(0, weight=0)
         self.rowconfigure(1, weight=1)
         self.columnconfigure(0, weight=1)
