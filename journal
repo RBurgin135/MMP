@@ -18,7 +18,7 @@ began work on navigation between screens
 
 07/03
 finished construction of model screen
-finished construction training screen
+finished construction of training screen
 finished construction of process screen
 polished GUI code to make it more readable and maintainable
 begin linking PCA Wavelet behaviour into GUI:
@@ -26,4 +26,11 @@ begin linking PCA Wavelet behaviour into GUI:
     save and load buttons now open system dialogs
     input widgets now take inputs and store them, ready to be used with model
     set to default button functional
-    model is built using the inputs from the user in the training screen
+
+14/03
+continue working on incorporating training
+    train a model using 1DBuild model
+
+hook up model to gui so that components in the gui respond how they should, i.e save button is disabled until a model is loaded
+add to model info frame to display model information
+add abort dialog to process screen

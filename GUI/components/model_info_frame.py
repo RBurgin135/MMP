@@ -3,7 +3,7 @@ from tkinter.ttk import *
 
 class ModelInfoFrame(LabelFrame):
     def __init__(self, master, controller, data):
-        super().__init__(master, text="info frame")
+        super().__init__(master, text="info frame", style='Custom.TFrame')
         self.rowconfigure(2, weight=1)
         self.columnconfigure(0, weight=1)
 
