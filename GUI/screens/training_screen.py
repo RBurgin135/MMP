@@ -117,5 +117,5 @@ class ButtonFrame(LabelFrame):
         Button(
             master=content,
             text="Train",
-            command=lambda: controller.navigate("process")
+            command=lambda: current_model.create_new_model(variables)
         ).pack(side='left')

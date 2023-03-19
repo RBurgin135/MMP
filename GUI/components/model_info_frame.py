@@ -7,24 +7,23 @@ class ModelInfoFrame(LabelFrame):
         super().__init__(master, text="info frame", style='Custom.TFrame', **kwargs)
 
         # content
-        is_data = current_model!=None
-
         # model title label
         ModelTitle(
             master=self,
-            is_data=is_data
+            current_model=current_model
         ).pack(
             side="top",
             fill="both"
         )
 
         # model info list
-        ModelInfo(
-            master=self,
-            is_data=is_data
-        ).pack(
-            fill="both"
-        )
+        if current_model.has_data():
+            ModelInfo(
+                master=self,
+                current_model=current_model
+            ).pack(
+                fill="both"
+            )
 
         # buttons
         if use_buttons:
@@ -39,32 +38,35 @@ class ModelInfoFrame(LabelFrame):
 
 
 class ModelTitle(Label):
-    def __init__(self, is_data, *args, **kwargs):
-        if is_data:
+    def __init__(self, current_model, **kwargs):
+        if current_model.has_data():
             super().__init__(
-                text="Model Name",
-                *args,
+                text=current_model.name,
                 **kwargs
             )
         else:
             super().__init__(
                 text="No Stored Model",
-                *args,
                 **kwargs
             )
 
 
-class ModelInfo(Label):
-    def __init__(self, is_data, **kwargs):
-        if not is_data:
-            super().__init__(
-                **kwargs
-            )
-        else:
-            super().__init__(
-                text="info",
-                **kwargs
-            )
+class ModelInfo(LabelFrame):
+    def __init__(self, master, current_model, **kwargs):
+        super().__init__(master, text="model info", **kwargs)
+
+        # content
+        for header_text, text in current_model.get_info():
+            # header
+            Label(
+                master=self,
+                text=header_text
+            ).pack()
+            for t in text:
+                Label(
+                    master=self,
+                    text=t
+                ).pack()
 
 
 class ButtonFrame(LabelFrame):
@@ -97,7 +99,7 @@ class ButtonFrame(LabelFrame):
                 initialdir=initial_dir,
                 filetypes=filetypes
             ),
-            state="normal" if current_model.has_data else"disabled"
+            state="normal" if current_model.has_data() else"disabled"
         ).pack(side='left')
 
         # load
