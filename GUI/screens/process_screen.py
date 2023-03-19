@@ -33,13 +33,13 @@ class ProcessScreen(LabelFrame):
         content.rowconfigure(0, weight=1)
         content.columnconfigure(0, weight=1)
         content.columnconfigure(1, weight=5)
-        is_data = False
 
         # model information frame
         ModelInfoFrame(
             master=content,
             controller=controller,
-            data=is_data
+            current_model=current_model,
+            use_buttons=False
         ).grid(
             column=0,
             row=0,

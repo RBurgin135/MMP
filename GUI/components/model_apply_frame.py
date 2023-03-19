@@ -6,13 +6,13 @@ from GUI.components.util import SetToDefaultsButton
 
 
 class ModelApplyFrame(LabelFrame):
-    def __init__(self, master, controller, data, **kwargs):
+    def __init__(self, master, controller, current_model, **kwargs):
         super().__init__(master, text="apply frame", **kwargs)
+        content = LabelFrame(master=self, text="content")
+        content.pack()
 
         # content
         # title
-        content = LabelFrame(master=self, text="content")
-        content.pack(fill="both")
         Label(
             master=content,
             text="Apply Model"
@@ -60,7 +60,7 @@ class ModelApplyFrame(LabelFrame):
         )
 
         # action button frame
-        ActionButtonFrame(
+        ButtonFrame(
             master=self,
             controller=controller,
             variables=[
@@ -74,42 +74,31 @@ class ModelApplyFrame(LabelFrame):
         )
 
 
-class ActionButtonFrame(LabelFrame):
+class ButtonFrame(LabelFrame):
     def __init__(self, master, controller, variables, **kwargs):
-        super().__init__(master, text="action button frame", **kwargs)
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
+        super().__init__(master, text="button frame", **kwargs)
+        content = LabelFrame(self, text="content")
+        content.pack()
 
         # content
         # set to defaults button
         SetToDefaultsButton(
-            master=self,
+            master=content,
             variables=variables
-        ).grid(
-            column=0,
-            row=0,
-            sticky="ne"
-        )
+        ).pack(side='left')
 
         # train button
         Button(
-            master=self,
+            master=content,
             text="Begin",
             command=lambda: controller.navigate("process")
-        ).grid(
-            column=1,
-            row=0,
-            sticky="nw"
-        )
+        ).pack(side='left')
 
 
 class OutputTypeFrame(Frame):
     def __init__(self, text_variable, **kwargs):
         super().__init__(**kwargs)
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
+
         # options
         options = [
             "",
@@ -124,18 +113,12 @@ class OutputTypeFrame(Frame):
         Label(
             master=self,
             text="Output Type:"
-        ).grid(
-            column=0,
-            row=0
-        )
+        ).pack(side='left')
         # option menu
         OptionMenu(
             self,
             text_variable,
             *options,
             command=lambda x: print(x)
-        ).grid(
-            column=1,
-            row=0
-        )
+        ).pack(side='left')
 

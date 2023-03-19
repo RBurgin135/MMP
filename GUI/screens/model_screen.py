@@ -1,6 +1,5 @@
 from tkinter import *
 
-from GUI.components.model_button_frame import ModelButtonFrame
 from GUI.components.model_apply_frame import ModelApplyFrame
 from GUI.components.model_info_frame import ModelInfoFrame
 
@@ -13,34 +12,23 @@ class ModelScreen(LabelFrame):
         self.columnconfigure(1, weight=5)
 
         # content
-        is_data = False
-
         # model information frame
         ModelInfoFrame(
             master=self,
             controller=controller,
-            data=is_data
+            current_model=current_model,
+            use_buttons=True
         ).grid(
             column=0,
             row=0,
             sticky="nsew"
-        )
-        # button frame
-        ModelButtonFrame(
-            master=self,
-            controller=controller,
-            current_model=current_model
-        ).grid(
-            column=0,
-            row=0,
-            sticky="ews"
         )
 
         # model application frame
         ModelApplyFrame(
             master=self,
             controller=controller,
-            data=is_data
+            current_model=current_model
         ).grid(
             column=1,
             row=0,

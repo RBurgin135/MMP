@@ -78,7 +78,7 @@ class TrainingScreen(LabelFrame):
         )
 
         # action buttons
-        ActionButtonFrame(
+        ButtonFrame(
             master=self,
             controller=controller,
             variables=[
@@ -93,43 +93,29 @@ class TrainingScreen(LabelFrame):
         )
 
 
-class ActionButtonFrame(LabelFrame):
+class ButtonFrame(LabelFrame):
     def __init__(self, master, controller, variables, current_model, **kwargs):
-        super().__init__(master, text="action button frame", **kwargs)
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=5)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=5)
+        super().__init__(master, text="button frame", **kwargs)
+        content = LabelFrame(self, text="content")
+        content.pack()
 
         # content
         # back
         Button(
-            master=self,
+            master=content,
             text="Back",
             command=lambda: controller.navigate("model")
-        ).grid(
-            column=0,
-            row=0,
-            sticky="ne"
-        )
+        ).pack(side='left')
 
         # set to defaults button
         SetToDefaultsButton(
-            master=self,
+            master=content,
             variables=variables
-        ).grid(
-            column=1,
-            row=0,
-            sticky="n"
-        )
+        ).pack(side='left')
 
         # train button
         Button(
-            master=self,
+            master=content,
             text="Train",
-            command=lambda: current_model.create_new_model(variables)
-        ).grid(
-            column=2,
-            row=0,
-            sticky="nw"
-        )
+            command=lambda: controller.navigate("process")
+        ).pack(side='left')
