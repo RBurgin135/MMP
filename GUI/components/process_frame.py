@@ -1,4 +1,5 @@
 from tkinter.ttk import *
+from tkinter import messagebox
 
 
 class ProcessFrame(LabelFrame):
@@ -17,7 +18,7 @@ class ProcessFrame(LabelFrame):
 
 class ButtonFrame(LabelFrame):
     def __init__(self, master, controller, **kwargs):
-        super().__init__(master, text="button frame")
+        super().__init__(master, text="button frame", **kwargs)
         content = LabelFrame(self, text="content")
         content.pack()
 
@@ -26,7 +27,8 @@ class ButtonFrame(LabelFrame):
         Button(
             master=content,
             text="Abort",
-            command=lambda: controller.navigate("model")
+            command=lambda: abort_dialog(controller)
+
         ).pack(side='left')
 
         # done
@@ -36,3 +38,10 @@ class ButtonFrame(LabelFrame):
             command=lambda: print("done"),
             state='disabled'
         ).pack(side='left')
+
+
+def abort_dialog(controller):
+    if messagebox.askyesno(
+            title="Confirm Abort",
+            message="Are you sure you want to abort the process? All progress will be lost"):
+        controller.navigate("model")

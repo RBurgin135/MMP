@@ -28,9 +28,15 @@ begin linking PCA Wavelet behaviour into GUI:
     set to default button functional
 
 14/03
-continue working on incorporating training
-    train a model using 1DBuild model
-
-hook up model to gui so that components in the gui respond how they should, i.e save button is disabled until a model is loaded
-add to model info frame to display model information
-add abort dialog to process screen
+continued working on incorporating training:
+    # train a model using 1DBuild model
+update gui:
+    changed button frames and layouts of windows to be consistent across program
+    cleaned up old code
+    added done button to process screen
+    add abort dialog to process screen
+hooked up model to gui:
+    info frame displays model information now
+    save button is activated when model information is stored
+navigation:
+    redid navigation to be much faster
