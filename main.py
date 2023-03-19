@@ -9,8 +9,8 @@ windll.shcore.SetProcessDpiAwareness(1)
 
 
 class MMP(Tk):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.title("PCA Wavelet Model Manager")
         self.iconbitmap('GUI/assets/kingfisher.ico')
         self.geometry("1000x600")
@@ -23,25 +23,20 @@ class MMP(Tk):
         self.rowconfigure(0, weight=1)
 
         # instantiate data class
-        current_model = Model(self)
-
-        # initialise frames to empty set
-        self.frames = {}
-        for Screen in navigation.Screens.values():
-            frame = Screen(
-                master=self,
-                controller=self,
-                current_model=current_model
-            )
-            frame.grid(row=0, column=0, sticky="nsew")
-            self.frames[Screen] = frame
+        self.current_model = Model(self)
 
         # show first screen
+        self.current_frame = Frame()
         self.navigate("model")
 
     def navigate(self, route):
-        frame = navigation.Screens[route]
-        self.frames[frame].tkraise()
+        self.current_frame.grid_forget()
+        self.current_frame = navigation.Screens[route](
+            master=self,
+            controller=self,
+            current_model=self.current_model
+        )
+        self.current_frame.grid(sticky="news")
 
 
 if __name__ == "__main__":
