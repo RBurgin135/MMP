@@ -4,6 +4,13 @@ import numpy as np
 IMAGE_SIZE = 64
 
 
+def preprocess_dataset(dataset):
+    processed_data = [[pre_process_image(x['image'])] for x in dataset]
+    processed_dataset = tf.data.Dataset.from_tensor_slices(processed_data)
+
+    return processed_dataset
+
+
 def pre_process_image(image):
     print("pre_process image.shape", image.shape)
     image = tf.cast(image, tf.float64)
@@ -22,10 +29,6 @@ def pre_process_image(image):
 def pre_process_entry(image, label):
     image = pre_process_image(image)
     return image, label
-
-
-def resize_dataset(dataset):
-    return dataset.map(lambda x: [pre_process_image(x['image'])])
 
 
 def addToPCA(ten, pca, mean):

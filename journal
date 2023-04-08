@@ -29,7 +29,8 @@ begin linking PCA Wavelet behaviour into GUI:
 
 14/03
 continued working on incorporating training:
-    # train a model using 1DBuild model
+    added loading images to make a TF dataset
+    investigated how to build a model using 1DBuild model
 update gui:
     changed button frames and layouts of windows to be consistent across program
     cleaned up old code
@@ -40,3 +41,12 @@ hooked up model to gui:
     save button is activated when model information is stored
 navigation:
     redid navigation to be much faster
+
+21/03
+continue working on incorporating training:
+    create a custom dataset using Tensorflow.dataset.Dataset
+    build a model using 1DBuild method
+add styling:
+    # text to have font size to reflect purpose
+add quality of life features:
+    # min size of window

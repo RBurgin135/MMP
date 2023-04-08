@@ -19,9 +19,9 @@ class SymmetricPadding2D(tf.keras.layers.Layer):
         super(SymmetricPadding2D, self).build(input_shape)
 
     def call(self, inputs):
-        if self.data_format is "channels_last":
+        if self.data_format == "channels_last":
             pad = [[0, 0]] + [[i, i] for i in self.padding] + [[0, 0]]
-        elif self.data_format is "channels_first":
+        elif self.data_format == "channels_first":
             pad = [[0, 0], [0, 0]] + [[i, i] for i in self.padding]
 
         paddings = tf.constant(pad)
