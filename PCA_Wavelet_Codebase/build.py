@@ -23,7 +23,7 @@ def build_model(dataset):
 
     print("model built successfully")
 
-    #built_correctly(head, inv_head, train_set)
+    built_correctly(head, inv_head, train_set)
 
     return head, inv_head
 
