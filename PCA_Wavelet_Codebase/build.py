@@ -1,26 +1,72 @@
 import tensorflow as tf
 import numpy as np
 
-from custom_layers.conv_2d_transpose_seperable_layer import Conv2DTransposeSeparableLayer
-from custom_layers.mean_layer import MeanLayer
-from custom_layers.symmetric_padding_2d import SymmetricPadding2D
-from utils import resize_dataset, setupfilters3D, filterImg3D, addToPCA, completePCA
+from PCA_Wavelet_Codebase.custom_layers.conv_2d_transpose_seperable_layer import Conv2DTransposeSeparableLayer
+from PCA_Wavelet_Codebase.custom_layers.mean_layer import MeanLayer
+from PCA_Wavelet_Codebase.custom_layers.symmetric_padding_2d import SymmetricPadding2D
+from PCA_Wavelet_Codebase.utils import preprocess_dataset, setupfilters3D, filterImg3D, addToPCA, completePCA
 
 
 def build_model(dataset):
     tf.keras.backend.set_floatx('float64')
-    dataset_resize = resize_dataset(dataset)
+    dataset_resize = preprocess_dataset(dataset)
 
-    testset = dataset_resize.take(500)
-    trainset = dataset_resize.skip(500)
-    head, invhead = build1D(
-        dataset=trainset,
+    test_set = dataset_resize.take(500)
+    train_set = dataset_resize.skip(500)
+    head, inv_head = build1D(
+        dataset=train_set,
         count=4,
         samplesize=500,
         keep_percent=1,
         flip=False,
         subtract_mean=True)
-    return head
+
+    print("model built successfully")
+
+    #built_correctly(head, inv_head, train_set)
+
+    return head, inv_head
+
+
+def built_correctly(head, invhead, dataset):
+    import matplotlib.pyplot as plt
+
+    plt.subplot(221)
+    plt.title('Original')
+    sample = next(iter(dataset.shuffle(20)))[0]
+
+    plt.imshow(sample*255)
+    print("sample.shape", sample.shape)
+
+    img = tf.transpose([sample], [0, 1, 2, 3])
+    print("img.shape", img.shape)
+
+    pred = head(img)
+    print("pred.shape", pred.shape)
+
+    plt.subplot(222)
+    plt.title('Slice')
+    plt.imshow(pred[0, :, :, 1] * 5*255, cmap='gray', vmin=0, vmax=1)
+    plt.subplot(223)
+    plt.title('Slice')
+    plt.imshow(pred[0, :, :, 2] * 5*255, cmap='gray', vmin=0, vmax=1)
+
+    print("pred.shape", pred.shape)
+
+    recon = invhead(pred)[0]
+    print("recon.shape", recon.shape)
+    plt.subplot(224)
+    plt.title('Filtered')
+    plt.imshow(recon*255)
+    plt.show()
+    print("sample.dtype", sample.dtype)
+    print("recon[0].dtype", recon.dtype)
+
+    print("np.prod(sample.shape)", np.prod(sample.shape))
+    psnr = 10 * np.log10(1.0 / ((np.linalg.norm(recon - sample) ** 2) / np.prod(sample.shape)))  # changed
+    ncc = np.corrcoef(tf.reshape(sample, [-1]), tf.reshape(recon, [-1]))
+    print("psnr = ", psnr)
+    print("ncc = ", ncc)
 
 
 def build1D(dataset, channels=3, count=6, samplesize=-1, keep_percent=0.2, flip=False, activity_regularizer=None,
