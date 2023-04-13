@@ -28,7 +28,8 @@ def test_dataset():
 
 
 def test_model():
-    dataset = create_dataset('C:/Users/ritch/Documents/CODING/UNI/Third Year/Major Project/datasets/infill')
+    dataset = create_dataset('C:/Users/ritch/Documents/CODING/UNI/Third Year/Major Project/datasets/infill/images',
+                             'C:/Users/ritch/Documents/CODING/UNI/Third Year/Major Project/datasets/infill/labels')
 
     build_model(dataset)
 

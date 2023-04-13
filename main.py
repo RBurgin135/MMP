@@ -14,6 +14,9 @@ class MMP(Tk):
         self.title("PCA Wavelet Model Manager")
         self.iconbitmap('GUI/assets/kingfisher.ico')
         self.geometry("1000x600")
+        self.minsize(width=950, height=400)
+        self.maxsize(width=1200, height=800)
+        self.resizable(width=False, height=False)
 
         # styling
         styling(self)

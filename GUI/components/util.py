@@ -8,7 +8,7 @@ class DirectoryPathButton(Button):
             text=text,
             command=lambda:
             text_variable.set(filedialog.askdirectory(
-                initialdir="/",
+                initialdir="",
                 title=text
             ))
             , *args, **kwargs)
@@ -20,7 +20,7 @@ class FilePathButton(Button):
             text=text,
             command=lambda:
             text_variable.set(filedialog.askopenfilename(
-                initialdir="/",
+                initialdir="",
                 title=text,
                 filetypes=filetypes
             ))

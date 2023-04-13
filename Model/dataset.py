@@ -11,26 +11,22 @@ min_radius = 5
 max_radius = 10
 
 
-def create_dataset(dataset_path):
-    # define paths
-    root_path = dataset_path
-    image_path = f'{root_path}/images'
-    label_path = f'{root_path}/labels'
+def create_dataset(images_path, labels_path):
 
     # define generator
     def generator():
-        for filename in os.listdir(image_path):
+        for filename in os.listdir(images_path):
             # load image
-            img = cv2.imread(f'{image_path}/{filename}')
+            img = cv2.imread(f'{images_path}/{filename}')
             if img is None:
-                print(f"Error loading image, with path: {image_path}/{filename}")
+                print(f"Error loading image, with path: {images_path}/{filename}")
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = img.astype(np.float32) / 255.
 
             # load label
-            label = cv2.imread(f'{label_path}/{filename}', cv2.IMREAD_GRAYSCALE)
+            label = cv2.imread(f'{labels_path}/{filename}', cv2.IMREAD_GRAYSCALE)
             if label is None:
-                print(f"No equivalent label file, with path: {label_path}/{filename}")
+                print(f"No equivalent label file, with path: {labels_path}/{filename}")
             label = label.astype(np.float32) / 255.
             label = np.expand_dims(label, axis=-1)
 
