@@ -1,7 +1,12 @@
 import threading
+from tkinter import filedialog
+import tensorflow as tf
 
 from Model.dataset import create_dataset
 from PCA_Wavelet_Codebase.build import build_model
+from PCA_Wavelet_Codebase.custom_layers.conv_2d_transpose_seperable_layer import Conv2DTransposeSeparableLayer
+from PCA_Wavelet_Codebase.custom_layers.mean_layer import MeanLayer
+from PCA_Wavelet_Codebase.custom_layers.symmetric_padding_2d import SymmetricPadding2D
 
 
 class Model:
@@ -9,6 +14,13 @@ class Model:
         self.name = None
         self.controller = controller
         self.pca_wavelet_model = None
+
+        # filesystem info
+        self.filetypes = (
+            ('HDF5 files', '*.h5'),
+            ('All files', '*.*')
+        )
+        self.initial_dir = ""
 
     def create_new_model(self, variables):
         # extract from variables
@@ -42,6 +54,30 @@ class Model:
         # apply
         dataset = create_dataset(images_path, labels_path)
         self.pca_wavelet_model(dataset)
+
+    def save(self):
+        path = filedialog.asksaveasfilename(
+            title="Save a model",
+            initialdir=self.initial_dir,
+            filetypes=self.filetypes
+        )
+        self.pca_wavelet_model.compile(optimizer='adam', loss='categorical_crossentropy')
+        self.pca_wavelet_model.save(path+".h5")
+
+    def load(self):
+        path = filedialog.askopenfilename(
+            title="Load a model",
+            initialdir=self.initial_dir,
+            filetypes=self.filetypes
+        )
+        self.pca_wavelet_model = tf.keras.models.load_model(
+            path,
+            custom_objects={
+                'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
+                'MeanLayer': MeanLayer,
+                'SymmetricPadding2D': SymmetricPadding2D
+            }
+        )
 
     def has_data(self):
         return self.name is not None

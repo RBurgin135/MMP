@@ -69,13 +69,6 @@ class ButtonFrame(Frame):
         content = Frame(self, name="content")
         content.pack()
 
-        # filesystem info
-        filetypes = (
-            ('Tensorflow Files', '*.tf'),
-            ('All files', '*.*')
-        )
-        initial_dir = ""
-
         # content
         # new
         Button(
@@ -90,11 +83,7 @@ class ButtonFrame(Frame):
             name='save_button',
             master=content,
             text="Save",
-            command=lambda: filedialog.asksaveasfilename(
-                title="Save a model",
-                initialdir=initial_dir,
-                filetypes=filetypes
-            ),
+            command=current_model.save,
             state="normal" if current_model.has_data() else"disabled"
         ).pack(side='left')
 
@@ -103,10 +92,6 @@ class ButtonFrame(Frame):
             name='load_button',
             master=content,
             text="Load",
-            command=lambda: filedialog.askopenfilename(
-                title="Load a model",
-                initialdir=initial_dir,
-                filetypes=filetypes
-            )
+            command=current_model.load
         ).pack(side='left')
 
