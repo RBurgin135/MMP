@@ -18,61 +18,70 @@ class ModelApplyFrame(LabelFrame):
             text="Apply Model"
         ).pack(
             padx=5,
-            pady=10,
-            anchor="w"
+            pady=15,
+            anchor="n"
         )
 
-        # dataset button
-        dataset_path = tk.StringVar()
-        PathFrame(
-            master=content,
-            controller=controller,
-            text="Dataset Path: ",
-            text_variable=dataset_path
-        ).pack(
-            padx=10,
-            pady=3,
-            anchor="w"
-        )
+        if current_model.pca_wavelet_model is None:
+            # no data image
+            self.no_data_image = tk.PhotoImage(file="GUI/assets/no_data.png")
+            Label(
+                master=content,
+                image=self.no_data_image,
+                width=1
+            ).pack(
+                anchor="n",
+                padx=5,
+                pady=10
+            )
+            # no data message
+            Label(
+                master=content,
+                text="Load or train a model to begin"
+            ).pack(
+                anchor="n",
+                padx=5,
+                pady=10
+            )
+        else:
+            # dataset button
+            dataset_path = tk.StringVar()
+            PathFrame(
+                master=content,
+                controller=controller,
+                text="Dataset Path: ",
+                text_variable=dataset_path
+            ).pack(
+                padx=10,
+                pady=3,
+                anchor="w"
+            )
 
-        # output path button
-        output_path = tk.StringVar()
-        PathFrame(
-            master=content,
-            controller=controller,
-            text="Output Path: ",
-            text_variable=output_path
-        ).pack(
-            padx=10,
-            pady=3,
-            anchor="w"
-        )
+            # output path button
+            output_path = tk.StringVar()
+            PathFrame(
+                master=content,
+                controller=controller,
+                text="Output Path: ",
+                text_variable=output_path
+            ).pack(
+                padx=10,
+                pady=3,
+                anchor="w"
+            )
 
-        # output type button
-        output_type = tk.StringVar()
-        OutputTypeFrame(
-            master=content,
-            text_variable=output_type
-        ).pack(
-            padx=10,
-            pady=3,
-            anchor="w"
-        )
-
-        # action button frame
-        ButtonFrame(
-            master=self,
-            controller=controller,
-            variables=[
-                dataset_path,
-                output_path,
-                output_type
-            ]
-        ).pack(
-            side="bottom",
-            fill="both"
-        )
-
+            # action button frame
+            ButtonFrame(
+                master=self,
+                controller=controller,
+                variables=[
+                    dataset_path,
+                    output_path
+                ]
+            ).pack(
+                side="bottom",
+                fill="both"
+            )
 
 class ButtonFrame(LabelFrame):
     def __init__(self, master, controller, variables, **kwargs):
