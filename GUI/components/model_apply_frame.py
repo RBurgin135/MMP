@@ -5,10 +5,10 @@ from GUI.components.path_frame import PathFrame
 from GUI.components.util import SetToDefaultsButton
 
 
-class ModelApplyFrame(LabelFrame):
+class ModelApplyFrame(Frame):
     def __init__(self, master, controller, current_model, **kwargs):
-        super().__init__(master, text="apply frame", **kwargs)
-        content = LabelFrame(master=self, text="content")
+        super().__init__(master, name='apply_frame', **kwargs)
+        content = Frame(master=self, name="content")
         content.pack()
 
         # content
@@ -22,10 +22,11 @@ class ModelApplyFrame(LabelFrame):
             anchor="n"
         )
 
-        if current_model.pca_wavelet_model is None:
+        if not current_model.has_data():
             # no data image
             self.no_data_image = tk.PhotoImage(file="GUI/assets/no_data.png")
             Label(
+                name='no_data_image',
                 master=content,
                 image=self.no_data_image,
                 width=1
@@ -83,10 +84,11 @@ class ModelApplyFrame(LabelFrame):
                 fill="both"
             )
 
-class ButtonFrame(LabelFrame):
+
+class ButtonFrame(Frame):
     def __init__(self, master, controller, variables, **kwargs):
-        super().__init__(master, text="button frame", **kwargs)
-        content = LabelFrame(self, text="content")
+        super().__init__(master, name='button_frame', **kwargs)
+        content = Frame(self, name="content")
         content.pack()
 
         # content
@@ -98,6 +100,7 @@ class ButtonFrame(LabelFrame):
 
         # train button
         Button(
+            name='train_button',
             master=content,
             text="Begin",
             command=lambda: controller.navigate("process")

@@ -6,9 +6,9 @@ from GUI.components.top_bar import TopBar
 from GUI.components.util import SetToDefaultsButton
 
 
-class TrainingScreen(LabelFrame):
+class TrainingScreen(Frame):
     def __init__(self, master, controller, current_model, **kwargs):
-        super().__init__(master, text="training screen", **kwargs)
+        super().__init__(master, name='training_screen', **kwargs)
 
         # top navigation bar
         TopBar(
@@ -18,7 +18,7 @@ class TrainingScreen(LabelFrame):
         ).pack(fill="both")
 
         # content
-        content = LabelFrame(self, text="content")
+        content = Frame(self, name="content")
         content.pack()
         indent = 25
         title_gap = 10
@@ -93,10 +93,10 @@ class TrainingScreen(LabelFrame):
         )
 
 
-class ButtonFrame(LabelFrame):
+class ButtonFrame(Frame):
     def __init__(self, master, controller, variables, current_model, **kwargs):
-        super().__init__(master, text="button frame", **kwargs)
-        content = LabelFrame(self, text="content")
+        super().__init__(master, name='button_frame', **kwargs)
+        content = Frame(self, name="content")
         content.pack()
 
         # content

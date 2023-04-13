@@ -1,9 +1,9 @@
 from tkinter.ttk import *
 
 
-class TopBar(LabelFrame):
+class TopBar(Frame):
     def __init__(self, master, controller, title, **kwargs):
-        super().__init__(master, text="top navigation bar", **kwargs)
+        super().__init__(master, name='top_navigation_bar', **kwargs)
 
         # content
         # title
