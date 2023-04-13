@@ -1,3 +1,4 @@
+from GUI.screens.splash_screens import LoadingScreen, SavingScreen
 from GUI.screens.model_screen import ModelScreen
 from GUI.screens.process_screen import ProcessScreen
 from GUI.screens.training_screen import TrainingScreen
@@ -6,5 +7,7 @@ from GUI.screens.training_screen import TrainingScreen
 Screens = {
     "model": ModelScreen,
     "training": TrainingScreen,
-    "process": ProcessScreen
+    "process": ProcessScreen,
+    "loading": LoadingScreen,
+    "saving": SavingScreen
 }

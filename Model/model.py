@@ -41,7 +41,7 @@ class Model:
             self.pca_wavelet_model, _ = build_model(dataset)
 
             # enable done button
-            buttons = self.controller.children['process_screen'].children['content']\
+            buttons = self.controller.children['process_screen'].children['content'] \
                 .children['process_frame'].children['button_frame'].children['content']
             buttons.children['done_button'].configure(state='enabled')
             buttons.children['abort_button'].configure(state='disabled')
@@ -56,33 +56,52 @@ class Model:
         output_path = variables[1].get()
 
         # apply
-        images = [images_path+'/'+x for x in os.listdir(images_path)]
+        images = [images_path + '/' + x for x in os.listdir(images_path)]
         pred = self.pca_wavelet_model(np.reshape(cv2.imread(images[0]), (1, 64, 64, 3)))
 
     def save(self):
+        # file system dialog
         path = filedialog.asksaveasfilename(
             title="Save a model",
             initialdir=self.initial_dir,
             filetypes=self.filetypes
         )
-        self.pca_wavelet_model.compile(optimizer='adam', loss='categorical_crossentropy')
-        self.pca_wavelet_model.save(path+".h5")
+
+        # multithread save
+        def do():
+            self.pca_wavelet_model.compile(optimizer='adam', loss='categorical_crossentropy')
+            self.pca_wavelet_model.save(path + ".h5")
+            self.controller.navigate('model')
+
+        # start process
+        self.controller.navigate('saving')
+        thread = threading.Thread(target=do)
+        thread.start()
 
     def load(self):
+        # file system dialog
         path = filedialog.askopenfilename(
             title="Load a model",
             initialdir=self.initial_dir,
             filetypes=self.filetypes
         )
-        self.pca_wavelet_model = tf.keras.models.load_model(
-            path,
-            custom_objects={
-                'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
-                'MeanLayer': MeanLayer,
-                'SymmetricPadding2D': SymmetricPadding2D
-            }
-        )
-        self.controller.navigate('model')
+
+        # multithread load
+        def do():
+            self.pca_wavelet_model = tf.keras.models.load_model(
+                path,
+                custom_objects={
+                    'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
+                    'MeanLayer': MeanLayer,
+                    'SymmetricPadding2D': SymmetricPadding2D
+                }
+            )
+            self.controller.navigate('model')
+
+        # start process
+        self.controller.navigate('loading')
+        thread = threading.Thread(target=do)
+        thread.start()
 
     def has_data(self):
         return self.pca_wavelet_model is not None
