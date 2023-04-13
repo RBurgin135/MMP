@@ -7,7 +7,7 @@ from GUI.components.top_bar import TopBar
 
 class ProcessScreen(LabelFrame):
     def __init__(self, master, controller, current_model, **kwargs):
-        super().__init__(master, text="process screen", **kwargs)
+        super().__init__(master, name="process_screen", text="process screen", **kwargs)
         self.rowconfigure(0, weight=0)
         self.rowconfigure(1, weight=1)
         self.columnconfigure(0, weight=1)
@@ -24,7 +24,7 @@ class ProcessScreen(LabelFrame):
         )
 
         # content
-        content = LabelFrame(self, text="content")
+        content = LabelFrame(self, name='content', text="content")
         content.grid(
             column=0,
             row=1,

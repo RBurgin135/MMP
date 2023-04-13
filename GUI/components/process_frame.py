@@ -4,7 +4,7 @@ from tkinter import messagebox
 
 class ProcessFrame(LabelFrame):
     def __init__(self, master, controller, **kwargs):
-        super().__init__(master, text="process frame", **kwargs)
+        super().__init__(master, name="process_frame", text="process frame", **kwargs)
 
         # content
         ButtonFrame(
@@ -18,8 +18,8 @@ class ProcessFrame(LabelFrame):
 
 class ButtonFrame(LabelFrame):
     def __init__(self, master, controller, **kwargs):
-        super().__init__(master, text="button frame", **kwargs)
-        content = LabelFrame(self, text="content")
+        super().__init__(master, name="button_frame", text="button frame", **kwargs)
+        content = LabelFrame(self, name='content', text="content")
         content.pack()
 
         # content
@@ -27,16 +27,17 @@ class ButtonFrame(LabelFrame):
         Button(
             master=content,
             text="Abort",
-            command=lambda: abort_dialog(controller)
-
+            command=lambda: abort_dialog(controller),
+            name='abort_button'
         ).pack(side='left')
 
         # done
         Button(
             master=content,
             text="Done",
-            command=lambda: print("done"),
-            state='disabled'
+            command=lambda: controller.navigate('model'),
+            state='disabled',
+            name='done_button'
         ).pack(side='left')
 
 

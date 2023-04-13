@@ -1,3 +1,5 @@
+import threading
+
 from Model.dataset import create_dataset
 from PCA_Wavelet_Codebase.build import build_model
 
@@ -17,11 +19,29 @@ class Model:
         # navigate
         self.controller.navigate("process")
 
-        # build
-        dataset = create_dataset(images_path, labels_path)
-        self.pca_wavelet_model, _ = build_model(dataset)
+        # train model subroutine
+        def train_model():
+            dataset = create_dataset(images_path, labels_path)
+            self.pca_wavelet_model, _ = build_model(dataset)
 
-        self.controller.navigate("model")
+            # enable done button
+            buttons = self.controller.children['process_screen'].children['content']\
+                .children['process_frame'].children['button_frame'].children['content']
+            buttons.children['done_button'].configure(state='enabled')
+            buttons.children['abort_button'].configure(state='disabled')
+
+        # build
+        thread = threading.Thread(target=train_model)
+        thread.start()
+
+    def apply_model(self, variables):
+        # extract from variables
+        images_path = variables[1].get()
+        labels_path = variables[2].get()
+
+        # apply
+        dataset = create_dataset(images_path, labels_path)
+        self.pca_wavelet_model(dataset)
 
     def has_data(self):
         return self.name is not None
