@@ -5,7 +5,7 @@ import tensorflow as tf
 import os
 
 # set parameters
-image_size = (40, 40)
+image_size = (64, 64)
 batch_size = 32
 min_radius = 5
 max_radius = 10

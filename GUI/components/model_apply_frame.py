@@ -75,6 +75,7 @@ class ModelApplyFrame(Frame):
             ButtonFrame(
                 master=self,
                 controller=controller,
+                current_model=current_model,
                 variables=[
                     dataset_path,
                     output_path
@@ -86,7 +87,7 @@ class ModelApplyFrame(Frame):
 
 
 class ButtonFrame(Frame):
-    def __init__(self, master, controller, variables, **kwargs):
+    def __init__(self, master, controller, current_model, variables, **kwargs):
         super().__init__(master, name='button_frame', **kwargs)
         content = Frame(self, name="content")
         content.pack()
@@ -98,12 +99,12 @@ class ButtonFrame(Frame):
             variables=variables
         ).pack(side='left')
 
-        # train button
+        # begin button
         Button(
-            name='train_button',
+            name='begin_button',
             master=content,
             text="Begin",
-            command=lambda: controller.navigate("process")
+            command=lambda: current_model.apply_model(variables)
         ).pack(side='left')
 
 
@@ -133,4 +134,3 @@ class OutputTypeFrame(Frame):
             *options,
             command=lambda x: print(x)
         ).pack(side='left')
-

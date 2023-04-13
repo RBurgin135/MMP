@@ -1,5 +1,9 @@
+import os
 import threading
 from tkinter import filedialog
+
+import cv2
+import numpy as np
 import tensorflow as tf
 
 from Model.dataset import create_dataset
@@ -48,12 +52,12 @@ class Model:
 
     def apply_model(self, variables):
         # extract from variables
-        images_path = variables[1].get()
-        labels_path = variables[2].get()
+        images_path = variables[0].get()
+        output_path = variables[1].get()
 
         # apply
-        dataset = create_dataset(images_path, labels_path)
-        self.pca_wavelet_model(dataset)
+        images = [images_path+'/'+x for x in os.listdir(images_path)]
+        pred = self.pca_wavelet_model(np.reshape(cv2.imread(images[0]), (1, 64, 64, 3)))
 
     def save(self):
         path = filedialog.asksaveasfilename(
@@ -78,9 +82,10 @@ class Model:
                 'SymmetricPadding2D': SymmetricPadding2D
             }
         )
+        self.controller.navigate('model')
 
     def has_data(self):
-        return self.name is not None
+        return self.pca_wavelet_model is not None
 
     def get_info(self):
         return [
