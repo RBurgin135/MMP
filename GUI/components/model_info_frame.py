@@ -83,7 +83,7 @@ class ButtonFrame(Frame):
             name='save_button',
             master=content,
             text="Save",
-            command=current_model.save,
+            command=current_model.save_model,
             state="normal" if current_model.has_data() else"disabled"
         ).pack(side='left')
 
@@ -92,6 +92,6 @@ class ButtonFrame(Frame):
             name='load_button',
             master=content,
             text="Load",
-            command=current_model.load
+            command=current_model.load_model
         ).pack(side='left')
 

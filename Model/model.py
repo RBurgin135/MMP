@@ -34,51 +34,77 @@ class Model:
 
         # navigate
         self.controller.navigate("process")
+        self.configure_process_screen_buttons(process_done=False)
 
-        # train model subroutine
-        def train_model():
+        # build multithread
+        def build():
             dataset = create_dataset(images_path, labels_path)
-            self.pca_wavelet_model, _ = build_model(dataset)
+            head, invhead = build_model(dataset)
+            self.pca_wavelet_model = head
 
-            # enable done button
-            buttons = self.controller.children['process_screen'].children['content'] \
-                .children['process_frame'].children['button_frame'].children['content']
-            buttons.children['done_button'].configure(state='enabled')
-            buttons.children['abort_button'].configure(state='disabled')
+            # configure buttons
+            self.configure_process_screen_buttons(process_done=True)
 
         # build
-        thread = threading.Thread(target=train_model)
+        thread = threading.Thread(target=build)
         thread.start()
 
     def apply_model(self, variables):
         # extract from variables
-        images_path = variables[0].get()
-        output_path = variables[1].get()
+        images_path = variables[0].get() + '/'
+        output_path = variables[1].get() + '/'
+
+        # navigate
+        self.controller.navigate("process")
+        self.configure_process_screen_buttons(process_done=False)
+
+        # apply model subroutine
+        def apply():
+            # iterate over images
+            for x in os.listdir(images_path):
+                # apply
+                image = cv2.imread(images_path + x)
+                prediction = self.pca_wavelet_model(np.reshape(image, (1, 64, 64, 3)))
+
+                # save
+                cv2.imwrite(output_path + x, np.array(prediction[0, :, :, 1] * 255))
+                print(f"finished: {x}")
+
+            # configure buttons
+            self.configure_process_screen_buttons(process_done=True)
 
         # apply
-        images = [images_path + '/' + x for x in os.listdir(images_path)]
-        pred = self.pca_wavelet_model(np.reshape(cv2.imread(images[0]), (1, 64, 64, 3)))
+        thread = threading.Thread(target=apply)
+        thread.start()
 
-    def save(self):
+    def configure_process_screen_buttons(self, process_done):
+        buttons = self.controller.children['process_screen'].children['content'] \
+            .children['process_frame'].children['button_frame'].children['content']
+        buttons.children['done_button'].configure(state='enabled' if process_done else 'disabled')
+        buttons.children['abort_button'].configure(state='disabled' if process_done else 'enabled')
+
+    def save_model(self):
         # file system dialog
         path = filedialog.asksaveasfilename(
             title="Save a model",
             initialdir=self.initial_dir,
             filetypes=self.filetypes
         )
+        if path.split('.')[-1] != '.h5':
+            path += '.h5'
 
         # multithread save
-        def do():
+        def save():
             self.pca_wavelet_model.compile(optimizer='adam', loss='categorical_crossentropy')
-            self.pca_wavelet_model.save(path + ".h5")
+            self.pca_wavelet_model.save(path)
             self.controller.navigate('model')
 
         # start process
         self.controller.navigate('saving')
-        thread = threading.Thread(target=do)
+        thread = threading.Thread(target=save)
         thread.start()
 
-    def load(self):
+    def load_model(self):
         # file system dialog
         path = filedialog.askopenfilename(
             title="Load a model",
@@ -87,7 +113,7 @@ class Model:
         )
 
         # multithread load
-        def do():
+        def load():
             self.pca_wavelet_model = tf.keras.models.load_model(
                 path,
                 custom_objects={
@@ -100,7 +126,7 @@ class Model:
 
         # start process
         self.controller.navigate('loading')
-        thread = threading.Thread(target=do)
+        thread = threading.Thread(target=load)
         thread.start()
 
     def has_data(self):
