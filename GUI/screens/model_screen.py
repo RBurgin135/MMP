@@ -1,6 +1,6 @@
 from tkinter import *
 
-from GUI.components.model_apply_frame import ModelApplyFrame
+from GUI.components.model_apply_notebook import ModelApplyNotebook, NoDataFrame
 from GUI.components.model_info_frame import ModelInfoFrame
 
 
@@ -25,12 +25,21 @@ class ModelScreen(Frame):
         )
 
         # model application frame
-        ModelApplyFrame(
-            master=self,
-            controller=controller,
-            current_model=current_model
-        ).grid(
-            column=1,
-            row=0,
-            sticky="nsew"
-        )
+        if current_model.pca_wavelet_model is not None:
+            ModelApplyNotebook(
+                master=self,
+                controller=controller,
+                current_model=current_model
+            ).grid(
+                column=1,
+                row=0,
+                sticky="nsew"
+            )
+        else:
+            NoDataFrame(
+                master=self
+            ).grid(
+                column=1,
+                row=0,
+                sticky="nsew"
+            )
