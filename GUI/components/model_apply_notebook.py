@@ -71,7 +71,7 @@ class NoDataFrame(Frame):
 
 
 class ButtonFrame(Frame):
-    def __init__(self, master, controller, current_model, variables, **kwargs):
+    def __init__(self, master, controller, current_model, variables, command, **kwargs):
         super().__init__(master, name='button_frame', **kwargs)
         content = Frame(self, name="content")
         content.pack()
@@ -88,7 +88,7 @@ class ButtonFrame(Frame):
             name='begin_button',
             master=content,
             text="Begin",
-            command=lambda: current_model.apply_model(variables)
+            command=command
         ).pack(side='left')
 
 

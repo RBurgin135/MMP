@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.ttk import *
 
-from GUI.components.path_frame import PathFrame
+from GUI.components.path_frame import DirectoryPathFrame
 
 
 class DirectoryApplyFrame(Frame):
@@ -19,9 +19,9 @@ class DirectoryApplyFrame(Frame):
             anchor="n"
         )
 
-        # dataset button
+        # dataset path button
         dataset_path = tk.StringVar()
-        PathFrame(
+        DirectoryPathFrame(
             master=self,
             controller=controller,
             text="Dataset Path: ",
@@ -34,7 +34,7 @@ class DirectoryApplyFrame(Frame):
 
         # output path button
         output_path = tk.StringVar()
-        PathFrame(
+        DirectoryPathFrame(
             master=self,
             controller=controller,
             text="Output Path: ",
@@ -46,14 +46,13 @@ class DirectoryApplyFrame(Frame):
         )
 
         # action button frame
+        variables = [dataset_path, output_path]
         button_frame(
             master=self,
             controller=controller,
             current_model=current_model,
-            variables=[
-                dataset_path,
-                output_path
-            ]
+            variables=variables,
+            command=lambda: current_model.apply_model(variables)
         ).pack(
             side="bottom",
             fill="both"

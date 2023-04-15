@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.ttk import *
 
-from GUI.components.path_frame import PathFrame
+from GUI.components.path_frame import DirectoryPathFrame
 from GUI.components.top_bar import TopBar
 from GUI.components.util import SetToDefaultsButton
 
@@ -54,7 +54,7 @@ class TrainingScreen(Frame):
         )
         # inputs
         input_path = tk.StringVar()
-        PathFrame(
+        DirectoryPathFrame(
             master=content,
             controller=controller,
             text="Inputs Path: ",
@@ -66,7 +66,7 @@ class TrainingScreen(Frame):
         )
         # labels
         label_path = tk.StringVar()
-        PathFrame(
+        DirectoryPathFrame(
             master=content,
             controller=controller,
             text="Labels Path: ",
