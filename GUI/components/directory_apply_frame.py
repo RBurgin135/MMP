@@ -52,7 +52,7 @@ class DirectoryApplyFrame(Frame):
             controller=controller,
             current_model=current_model,
             variables=variables,
-            command=lambda: current_model.apply_model(variables)
+            command=lambda: current_model.apply_model_to_dir(variables)
         ).pack(
             side="bottom",
             fill="both"

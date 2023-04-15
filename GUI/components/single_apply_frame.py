@@ -25,7 +25,7 @@ class SingleApplyFrame(Frame):
         Label(
             name='preview',
             master=self,
-            text="Preview will show here"
+            text="Preview will be shown here"
         ).pack(
             padx=10,
             pady=3,
@@ -37,7 +37,7 @@ class SingleApplyFrame(Frame):
             preview_button = controller.children['model_screen'].children['single_apply_frame'].children['preview']
             try:
                 image = Image.open(image_path.get())
-                self.image = ImageTk.PhotoImage(image.resize((100, 100)))
+                self.image = ImageTk.PhotoImage(image.resize((200, 200)))
                 preview_button.configure(image=self.image)
             except (FileNotFoundError, AttributeError):
                 preview_button.configure(text="File not found")
@@ -66,14 +66,13 @@ class SingleApplyFrame(Frame):
         )
 
         # action button frame
+        variables = [image_path]
         button_frame(
             master=self,
             controller=controller,
             current_model=current_model,
-            variables=[
-                image_path
-            ],
-            command=lambda: print(0)
+            variables=variables,
+            command=lambda: current_model.apply_model_to_image(variables)
         ).pack(
             side="bottom",
             fill="both"

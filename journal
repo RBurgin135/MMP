@@ -53,4 +53,8 @@ add quality of life features:
     min size of window
 add ability to apply model:
     add model to apply to folder of images and output prediction
-    # add model to apply to one image and show result
+    add model to apply to one image and show result:
+        add preview
+        # make it work
+        # add result screen
+redo journal to reflect actions taken on git

@@ -49,7 +49,7 @@ class Model:
         thread = threading.Thread(target=build)
         thread.start()
 
-    def apply_model(self, variables):
+    def apply_model_to_dir(self, variables):
         # extract from variables
         images_path = variables[0].get() + '/'
         output_path = variables[1].get() + '/'
@@ -76,6 +76,17 @@ class Model:
         # apply
         thread = threading.Thread(target=apply)
         thread.start()
+
+    def apply_model_to_image(self, variables):
+        # extract from variables
+        image_path = variables[0].get()
+
+        # apply
+        image = cv2.imread(image_path)
+        prediction = self.pca_wavelet_model(np.reshape(image, (1, 64, 64, 3)))
+
+        # navigate
+        self.controller.navigate('result')
 
     def configure_process_screen_buttons(self, process_done):
         buttons = self.controller.children['process_screen'].children['content'] \

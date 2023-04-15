@@ -52,8 +52,7 @@ class NoDataFrame(Frame):
         Label(
             name='no_data_image',
             master=self,
-            image=self.no_data_image,
-            width=1
+            image=self.no_data_image
         ).pack(
             anchor="n",
             padx=5,
