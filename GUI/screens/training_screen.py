@@ -60,7 +60,7 @@ class TrainingScreen(Frame):
             text="Inputs Path: ",
             text_variable=input_path
         ).pack(
-            anchor="w",
+            anchor="n",
             padx=indent * 2,
             pady=sub_gap
         )
@@ -72,7 +72,7 @@ class TrainingScreen(Frame):
             text="Labels Path: ",
             text_variable=label_path
         ).pack(
-            anchor="w",
+            anchor="n",
             padx=indent * 2,
             pady=sub_gap
         )

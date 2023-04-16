@@ -1,5 +1,4 @@
 from tkinter.ttk import *
-from tkinter import filedialog
 
 
 class ModelInfoFrame(Frame):

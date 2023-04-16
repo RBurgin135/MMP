@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import filedialog
 from tkinter.ttk import *
 import cv2
@@ -6,7 +5,7 @@ import numpy as np
 from PIL import ImageTk, Image
 
 
-class ResultScreen(Frame):
+class ResultsScreen(Frame):
     def __init__(self, master, controller, current_model, **kwargs):
         super().__init__(master, name='results_screen', **kwargs)
         self.show_image = None

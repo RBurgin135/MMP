@@ -30,7 +30,7 @@ class SingleApplyFrame(Frame):
         ).pack(
             padx=10,
             pady=3,
-            anchor="w"
+            anchor="n"
         )
 
         # load preview

@@ -29,7 +29,7 @@ class DirectoryApplyFrame(Frame):
         ).pack(
             padx=10,
             pady=3,
-            anchor="w"
+            anchor="n"
         )
 
         # output path button
@@ -42,7 +42,7 @@ class DirectoryApplyFrame(Frame):
         ).pack(
             padx=10,
             pady=3,
-            anchor="w"
+            anchor="n"
         )
 
         # action button frame

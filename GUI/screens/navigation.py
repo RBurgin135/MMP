@@ -1,4 +1,4 @@
-from GUI.screens.result_screen import ResultScreen
+from GUI.screens.results_screen import ResultsScreen
 from GUI.screens.splash_screens import LoadingScreen, SavingScreen
 from GUI.screens.model_screen import ModelScreen
 from GUI.screens.process_screen import ProcessScreen
@@ -11,5 +11,5 @@ Screens = {
     "process": ProcessScreen,
     "loading": LoadingScreen,
     "saving": SavingScreen,
-    "result": ResultScreen
+    "result": ResultsScreen
 }
