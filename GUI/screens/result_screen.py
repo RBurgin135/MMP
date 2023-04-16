@@ -1,57 +1,39 @@
+import tkinter as tk
+from tkinter import filedialog
 from tkinter.ttk import *
-
-from GUI.components.top_bar import TopBar
+import cv2
+import numpy as np
+from PIL import ImageTk, Image
 
 
 class ResultScreen(Frame):
     def __init__(self, master, controller, current_model, **kwargs):
-        super().__init__(master, name='result_screen', **kwargs)
-        self.rowconfigure(0, weight=0)
-        self.rowconfigure(1, weight=1)
-        self.columnconfigure(0, weight=1)
-
-        # top bar
-        TopBar(
-            master=self,
-            controller=controller,
-            title="Results"
-        ).grid(
-            column=0,
-            row=0,
-            sticky="new"
-        )
-
-        # content
-        content = Frame(self, name='content')
-        content.grid(
-            column=0,
-            row=1,
-            sticky="nsew"
-        )
+        super().__init__(master, name='results_screen', **kwargs)
+        self.show_image = None
 
         # results
         Label(
-            name='result_image',
-            master=content,
-            text="result placeholder"
-        ).pack(
-            padx=5,
-            pady=30,
-            anchor='n'
-        )
-        Label(
             name='result_image_caption',
-            master=content,
+            master=self,
             text='Result'
         ).pack(
             padx=5,
             pady=10,
             anchor='n'
         )
+        Label(
+            name='result_image',
+            master=self,
+            text=""
+        ).pack(
+            padx=5,
+            pady=20,
+            anchor='n'
+        )
 
         # button frame
         ButtonFrame(
-            master=content,
+            master=self,
             controller=controller,
             current_model=current_model
         ).pack(
@@ -59,12 +41,26 @@ class ResultScreen(Frame):
             fill='both'
         )
 
+    def take_info(self, variables, prediction):
+        button_frame = self.children['button_frame']
+
+        # take images
+        button_frame.cv2_image = np.array(prediction[0, :, :, 1] * 255)
+        image = Image.fromarray(button_frame.cv2_image)
+        self.show_image = ImageTk.PhotoImage(
+            image=image.resize((200, 200), Image.NEAREST)
+        )
+
+        # reconfigure result image
+        self.children['result_image'].configure(image=self.show_image)
+
 
 class ButtonFrame(Frame):
     def __init__(self, master, controller, current_model, **kwargs):
         super().__init__(master, name='button_frame', **kwargs)
         content = Frame(self, name='content')
         content.pack()
+        self.cv2_image = None
 
         # content
         # back
@@ -75,20 +71,25 @@ class ButtonFrame(Frame):
             command=lambda: controller.navigate('model')
         ).pack(side='left')
 
-        # redo
-        Button(
-            name='redo_button',
-            master=content,
-            text="Redo",
-            command=lambda: print(0)
-        ).pack(side='left')
-
+        def save_image():
+            # file system dialog
+            path = filedialog.asksaveasfilename(
+                title="Save a model",
+                initialdir="",
+                filetypes=(
+                    ('PNG files', '*.png'),
+                    ('JPG files', '*.jpg'),
+                    ('All files', '*')
+                )
+            )
+            # save
+            cv2.imwrite(path, self.cv2_image)
         # save
         Button(
             name='save_button',
             master=content,
             text="Save",
-            command=lambda: print(0)
+            command=save_image
         ).pack(side='left')
 
 

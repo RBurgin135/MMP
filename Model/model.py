@@ -22,7 +22,7 @@ class Model:
         # filesystem info
         self.filetypes = (
             ('HDF5 files', '*.h5'),
-            ('All files', '*.*')
+            ('All files', '*')
         )
         self.initial_dir = ""
 
@@ -87,6 +87,9 @@ class Model:
 
         # navigate
         self.controller.navigate('result')
+
+        # show result image
+        self.controller.children['results_screen'].take_info(variables, prediction)
 
     def configure_process_screen_buttons(self, process_done):
         buttons = self.controller.children['process_screen'].children['content'] \

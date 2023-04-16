@@ -3,7 +3,7 @@ from tkinter.ttk import *
 
 from PIL import Image, ImageTk
 
-from GUI.components.path_frame import DirectoryPathFrame, FilePathFrame
+from GUI.components.path_frame import FilePathFrame
 
 
 class SingleApplyFrame(Frame):
@@ -20,16 +20,17 @@ class SingleApplyFrame(Frame):
             anchor="n"
         )
 
-        # preview
+        # file path frame
         image_path = tk.StringVar()
-        Label(
-            name='preview',
+        FilePathFrame(
             master=self,
-            text="Preview will be shown here"
+            controller=controller,
+            text="Image Path: ",
+            text_variable=image_path
         ).pack(
             padx=10,
             pady=3,
-            anchor='n'
+            anchor="w"
         )
 
         # load preview
@@ -54,15 +55,15 @@ class SingleApplyFrame(Frame):
             anchor='n'
         )
 
-        FilePathFrame(
+        # preview
+        Label(
+            name='preview',
             master=self,
-            controller=controller,
-            text="Image Path: ",
-            text_variable=image_path
+            text=""
         ).pack(
             padx=10,
-            pady=3,
-            anchor="w"
+            pady=15,
+            anchor='n'
         )
 
         # action button frame
