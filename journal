@@ -60,7 +60,10 @@ add ability to apply model:
         make it work
         add result screen
 add robustness:
-    # error checking for inputs
+    # error checking for inputs for training screen
+    for model save and load
+    # for apply to directory
+    # for apply to image
 add functionality:
     # make process screen output to console
     abort terminates process
