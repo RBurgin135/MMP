@@ -5,6 +5,7 @@ from tkinter import filedialog
 import cv2
 import numpy as np
 import tensorflow as tf
+from PIL import ImageTk, Image
 
 from Model.dataset import create_dataset
 from PCA_Wavelet_Codebase.build import build_model
@@ -91,7 +92,7 @@ class Model:
         self.controller.navigate('result')
 
         # show result image
-        self.controller.children['results_screen'].take_info(variables, prediction)
+        self.give_results_prediction(prediction)
 
     def configure_process_screen_buttons(self, process_done):
         buttons = self.controller.children['process_screen'].children['content'] \
@@ -147,6 +148,20 @@ class Model:
 
     def give_process_title(self, title):
         self.controller.children['process_screen'].children['title'].configure(text=title)
+
+    def give_results_prediction(self, prediction):
+        results_screen = self.controller.children['results_screen']
+        button_frame = results_screen.children['button_frame']
+
+        # take images
+        button_frame.cv2_image = np.array(prediction[0, :, :, 1] * 255)
+        image = Image.fromarray(button_frame.cv2_image)
+        results_screen.show_image = ImageTk.PhotoImage(
+            image=image.resize((200, 200), Image.NEAREST)
+        )
+
+        # reconfigure result image
+        results_screen.children['result_image'].configure(image=results_screen.show_image)
 
     def has_data(self):
         return self.pca_wavelet_model is not None

@@ -1,8 +1,6 @@
 from tkinter import filedialog
 from tkinter.ttk import *
 import cv2
-import numpy as np
-from PIL import ImageTk, Image
 
 
 class ResultsScreen(Frame):
@@ -40,19 +38,6 @@ class ResultsScreen(Frame):
             side='bottom',
             fill='both'
         )
-
-    def take_info(self, variables, prediction):
-        button_frame = self.children['button_frame']
-
-        # take images
-        button_frame.cv2_image = np.array(prediction[0, :, :, 1] * 255)
-        image = Image.fromarray(button_frame.cv2_image)
-        self.show_image = ImageTk.PhotoImage(
-            image=image.resize((200, 200), Image.NEAREST)
-        )
-
-        # reconfigure result image
-        self.children['result_image'].configure(image=self.show_image)
 
 
 class ButtonFrame(Frame):
