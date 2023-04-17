@@ -47,7 +47,7 @@ class FilePathFrame(PathFrame):
 
 class DirectoryPathFrame(PathFrame):
     def __init__(self, master, controller, text, text_variable, **kwargs):
-        super().__init__(master, controller, text, text_variable)
+        super().__init__(master, controller, text, text_variable, **kwargs)
         DirectoryPathButton(
             master=self,
             text="Find",
