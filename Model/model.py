@@ -34,6 +34,7 @@ class Model:
 
         # navigate
         self.controller.navigate("process")
+        self.give_process_title("Training")
         self.configure_process_screen_buttons(process_done=False)
 
         # build multithread
@@ -56,6 +57,7 @@ class Model:
 
         # navigate
         self.controller.navigate("process")
+        self.give_process_title("Applying to Directory")
         self.configure_process_screen_buttons(process_done=False)
 
         # apply model subroutine
@@ -142,6 +144,9 @@ class Model:
         self.controller.navigate('loading')
         thread = threading.Thread(target=load)
         thread.start()
+
+    def give_process_title(self, title):
+        self.controller.children['process_screen'].children['title'].configure(text=title)
 
     def has_data(self):
         return self.pca_wavelet_model is not None

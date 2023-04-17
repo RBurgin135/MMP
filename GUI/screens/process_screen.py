@@ -10,6 +10,7 @@ class ProcessScreen(Frame):
 
         # title
         Label(
+            name='title',
             master=self,
             text="Process",
             style='Title.TLabel'
