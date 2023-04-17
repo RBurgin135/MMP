@@ -49,20 +49,31 @@ continue working on incorporating training:
 add styling:
     text to have font size to reflect purpose
     background colour for shaded font and buttons
-    make process screen title show the action taken
+    make process screen title reflect the action
     # make info frame consistent width
 add quality of life features:
     min size of window
 add ability to apply model:
+    change apply screen to notebook, and add tabs
     add model to apply to folder of images and output prediction
     add model to apply to one image and show result:
         add preview
         make it work
         add result screen
-add robustness:
-    # error checking for inputs
+add load and saving functionality:
+    add functionality
+    multithread
+    add loading and saving splash screens
+add robustness error checking for inputs
+    # for training screen
+    for model save and load
+    # for apply to directory
+    # for apply to image
 add functionality:
     # make process screen output to console
     abort terminates process
-
-verify git actions are in journal
+add comments and documentation:
+    # screens
+    # components
+    # model
+    # pca wavelet

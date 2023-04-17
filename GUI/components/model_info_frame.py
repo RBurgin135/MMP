@@ -106,4 +106,3 @@ class ButtonFrame(Frame):
             command=current_model.load_model,
             style=style
         ).pack(side='left')
-

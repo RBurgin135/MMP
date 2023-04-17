@@ -87,6 +87,12 @@ class Model:
             initialdir=self.initial_dir,
             filetypes=self.filetypes
         )
+
+        # error checking
+        if path == "" or path is None:
+            return
+
+        # add file type
         if path.split('.')[-1] != 'h5':
             path += '.h5'
 
@@ -111,14 +117,17 @@ class Model:
 
         # multithread load
         def load():
-            self.pca_wavelet_model = tf.keras.models.load_model(
-                path,
-                custom_objects={
-                    'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
-                    'MeanLayer': MeanLayer,
-                    'SymmetricPadding2D': SymmetricPadding2D
-                }
-            )
+            try:
+                self.pca_wavelet_model = tf.keras.models.load_model(
+                    path,
+                    custom_objects={
+                        'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
+                        'MeanLayer': MeanLayer,
+                        'SymmetricPadding2D': SymmetricPadding2D
+                    }
+                )
+            except IOError:
+                pass
             self.controller.navigate('model')
 
         # start process
