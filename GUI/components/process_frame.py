@@ -19,6 +19,8 @@ class ProcessFrame(Frame):
 class ButtonFrame(Frame):
     def __init__(self, master, controller, **kwargs):
         super().__init__(master, name='button_frame', **kwargs)
+        self.controller = controller
+        self.process = None
         content = Frame(self, name='content')
         content.pack()
 
@@ -27,7 +29,7 @@ class ButtonFrame(Frame):
         Button(
             master=content,
             text="Abort",
-            command=lambda: abort_dialog(controller),
+            command=self.abort_dialog,
             name='abort_button'
         ).pack(side='left')
 
@@ -40,9 +42,10 @@ class ButtonFrame(Frame):
             name='done_button'
         ).pack(side='left')
 
-
-def abort_dialog(controller):
-    if messagebox.askyesno(
-            title="Confirm Abort",
-            message="Are you sure you want to abort the process? All progress will be lost"):
-        controller.navigate("model")
+    def abort_dialog(self):
+        if messagebox.askyesno(
+                title="Confirm Abort",
+                message="Are you sure you want to abort the process? All progress will be lost",
+                default=messagebox.NO):
+            self.controller.navigate("model")
+            self.process.abort()

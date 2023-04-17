@@ -1,4 +1,3 @@
-import os
 import threading
 from tkinter import filedialog
 
@@ -7,8 +6,7 @@ import numpy as np
 import tensorflow as tf
 from PIL import ImageTk, Image
 
-from Model.dataset import create_dataset
-from PCA_Wavelet_Codebase.build import build_model
+from Model import processes
 from PCA_Wavelet_Codebase.custom_layers.conv_2d_transpose_seperable_layer import Conv2DTransposeSeparableLayer
 from PCA_Wavelet_Codebase.custom_layers.mean_layer import MeanLayer
 from PCA_Wavelet_Codebase.custom_layers.symmetric_padding_2d import SymmetricPadding2D
@@ -33,52 +31,40 @@ class Model:
         images_path = variables[1].get()
         labels_path = variables[2].get()
 
+        # build
+        thread = processes.Build(
+            current_model=self,
+            images_path=images_path,
+            labels_path=labels_path
+        )
+        thread.start()
+
         # navigate
         self.controller.navigate("process")
-        self.give_process_title("Training")
-        self.configure_process_screen_buttons(process_done=False)
-
-        # build multithread
-        def build():
-            dataset = create_dataset(images_path, labels_path)
-            head, invhead = build_model(dataset)
-            self.pca_wavelet_model = head
-
-            # configure buttons
-            self.configure_process_screen_buttons(process_done=True)
-
-        # build
-        thread = threading.Thread(target=build)
-        thread.start()
+        self.give_process_info(
+            title="Training",
+            process=thread
+        )
 
     def apply_model_to_dir(self, variables):
         # extract from variables
         images_path = variables[0].get() + '/'
         output_path = variables[1].get() + '/'
 
+        # apply
+        thread = processes.ApplyToDir(
+            current_model=self,
+            images_path=images_path,
+            output_path=output_path
+        )
+        thread.start()
+
         # navigate
         self.controller.navigate("process")
-        self.give_process_title("Applying to Directory")
-        self.configure_process_screen_buttons(process_done=False)
-
-        # apply model subroutine
-        def apply():
-            # iterate over images
-            for x in os.listdir(images_path):
-                # apply
-                image = cv2.imread(images_path + x)
-                prediction = self.pca_wavelet_model(np.reshape(image, (1, 64, 64, 3)))
-
-                # save
-                cv2.imwrite(output_path + x, np.array(prediction[0, :, :, 1] * 255))
-                print(f"finished: {x}")
-
-            # configure buttons
-            self.configure_process_screen_buttons(process_done=True)
-
-        # apply
-        thread = threading.Thread(target=apply)
-        thread.start()
+        self.give_process_info(
+            title="Applying to Directory",
+            process=thread
+        )
 
     def apply_model_to_image(self, variables):
         # extract from variables
@@ -93,12 +79,6 @@ class Model:
 
         # show result image
         self.give_results_prediction(prediction)
-
-    def configure_process_screen_buttons(self, process_done):
-        buttons = self.controller.children['process_screen'].children['content'] \
-            .children['process_frame'].children['button_frame'].children['content']
-        buttons.children['done_button'].configure(state='enabled' if process_done else 'disabled')
-        buttons.children['abort_button'].configure(state='disabled' if process_done else 'enabled')
 
     def save_model(self):
         # file system dialog
@@ -146,10 +126,18 @@ class Model:
         thread = threading.Thread(target=load)
         thread.start()
 
-    def give_process_title(self, title):
-        self.controller.children['process_screen'].children['title'].configure(text=title)
+    def give_process_info(self, title, process):
+        # set title
+        process_screen = self.controller.children['process_screen']
+        process_screen.children['title'].configure(text=title)
+
+        # set process
+        button_frame = process_screen.children['content']\
+            .children['process_frame'].children['button_frame']
+        button_frame.process = process
 
     def give_results_prediction(self, prediction):
+        # get references
         results_screen = self.controller.children['results_screen']
         button_frame = results_screen.children['button_frame']
 
