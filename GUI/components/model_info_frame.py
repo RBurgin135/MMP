@@ -3,13 +3,14 @@ from tkinter.ttk import *
 
 class ModelInfoFrame(Frame):
     def __init__(self, master, controller, current_model, use_buttons, **kwargs):
-        super().__init__(master, name='info_frame', style='Custom.TFrame', **kwargs)
+        super().__init__(master, name='info_frame', style='ShadedFrame.TFrame', **kwargs)
 
         # content
         if not current_model.has_data():
             Label(
                 master=self,
-                text="No Stored Model"
+                text="No Stored Model",
+                style='ShadedTitle.TLabel'
             ).pack(
                 pady=15,
                 anchor='n'
@@ -18,7 +19,8 @@ class ModelInfoFrame(Frame):
             # model title
             Label(
                 master=self,
-                text=current_model.name
+                text=current_model.name,
+                style='ShadedTitle.TLabel'
             ).pack(
                 pady=15,
                 anchor='n'
@@ -37,7 +39,8 @@ class ModelInfoFrame(Frame):
             ButtonFrame(
                 master=self,
                 controller=controller,
-                current_model=current_model
+                current_model=current_model,
+                style='ShadedButton.TButton'
             ).pack(
                 side="bottom",
                 fill="both"
@@ -46,25 +49,32 @@ class ModelInfoFrame(Frame):
 
 class ModelInfo(Frame):
     def __init__(self, master, current_model, **kwargs):
-        super().__init__(master, name='model_info', **kwargs)
+        super().__init__(master, name='model_info', style='ShadedFrame.TFrame', **kwargs)
 
         # content
         for header_text, text in current_model.get_info():
             # header
             Label(
                 master=self,
-                text=header_text
-            ).pack()
+                text=header_text,
+                style='ShadedTitle.TLabel'
+            ).pack(
+                anchor='w'
+            )
             for t in text:
                 Label(
                     master=self,
-                    text=t
-                ).pack()
+                    text=t,
+                    style='ShadedText.TLabel'
+                ).pack(
+                    anchor='w',
+                    padx=10
+                )
 
 
 class ButtonFrame(Frame):
-    def __init__(self, master, controller, current_model, **kwargs):
-        super().__init__(master, name='button_frame', style='Custom.TFrame', **kwargs)
+    def __init__(self, master, controller, current_model, style, **kwargs):
+        super().__init__(master, name='button_frame', style='ShadedFrame.TFrame', **kwargs)
         content = Frame(self, name="content")
         content.pack()
 
@@ -74,7 +84,8 @@ class ButtonFrame(Frame):
             name='new_button',
             master=content,
             text="New",
-            command=lambda: controller.navigate("training")
+            command=lambda: controller.navigate("training"),
+            style=style
         ).pack(side='left')
 
         # save
@@ -83,7 +94,8 @@ class ButtonFrame(Frame):
             master=content,
             text="Save",
             command=current_model.save_model,
-            state="normal" if current_model.has_data() else"disabled"
+            state="normal" if current_model.has_data() else"disabled",
+            style=style
         ).pack(side='left')
 
         # load
@@ -91,6 +103,7 @@ class ButtonFrame(Frame):
             name='load_button',
             master=content,
             text="Load",
-            command=current_model.load_model
+            command=current_model.load_model,
+            style=style
         ).pack(side='left')
 

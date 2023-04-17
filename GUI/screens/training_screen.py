@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter.ttk import *
 
 from GUI.components.path_frame import DirectoryPathFrame
-from GUI.components.top_bar import TopBar
 from GUI.components.util import SetToDefaultsButton
 
 
@@ -11,11 +10,14 @@ class TrainingScreen(Frame):
         super().__init__(master, name='training_screen', **kwargs)
 
         # top navigation bar
-        TopBar(
+        Label(
             master=self,
-            controller=controller,
-            title="Train New Model",
-        ).pack(fill="both")
+            text="Train New Model",
+            style='Title.TLabel'
+        ).pack(
+            pady=15,
+            anchor='n'
+        )
 
         # content
         content = Frame(self, name="content")

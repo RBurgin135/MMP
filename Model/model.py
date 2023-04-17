@@ -104,7 +104,7 @@ class Model:
             initialdir=self.initial_dir,
             filetypes=self.filetypes
         )
-        if path.split('.')[-1] != '.h5':
+        if path.split('.')[-1] != 'h5':
             path += '.h5'
 
         # multithread save

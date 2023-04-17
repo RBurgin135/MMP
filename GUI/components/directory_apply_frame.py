@@ -12,7 +12,8 @@ class DirectoryApplyFrame(Frame):
         # title
         Label(
             master=self,
-            text="Apply Model to Directory"
+            text="Apply Model to Directory",
+            style='Title.TLabel'
         ).pack(
             padx=5,
             pady=15,

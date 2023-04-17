@@ -8,7 +8,8 @@ class LoadingScreen(Frame):
         # content
         Label(
             master=self,
-            text="Loading..."
+            text="Loading...",
+            style='Title.TLabel'
         ).pack(
             pady=25
         )
@@ -21,7 +22,8 @@ class SavingScreen(Frame):
         # content
         Label(
             master=self,
-            text="Saving..."
+            text="Saving...",
+            style='Title.TLabel'
         ).pack(
             pady=25
         )

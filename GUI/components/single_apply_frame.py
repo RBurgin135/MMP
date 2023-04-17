@@ -13,7 +13,8 @@ class SingleApplyFrame(Frame):
         # title
         Label(
             master=self,
-            text="Apply Model to Image"
+            text="Apply Model to Image",
+            style='Title.TLabel'
         ).pack(
             padx=5,
             pady=15,

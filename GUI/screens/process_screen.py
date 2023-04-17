@@ -2,34 +2,25 @@ from tkinter.ttk import *
 
 from GUI.components.model_info_frame import ModelInfoFrame
 from GUI.components.process_frame import ProcessFrame
-from GUI.components.top_bar import TopBar
 
 
 class ProcessScreen(Frame):
     def __init__(self, master, controller, current_model, **kwargs):
         super().__init__(master, name='process_screen', **kwargs)
-        self.rowconfigure(0, weight=0)
-        self.rowconfigure(1, weight=1)
-        self.columnconfigure(0, weight=1)
 
-        # top bar
-        TopBar(
+        # title
+        Label(
             master=self,
-            controller=controller,
-            title="Process"
-        ).grid(
-            column=0,
-            row=0,
-            sticky="new"
+            text="Process",
+            style='Title.TLabel'
+        ).pack(
+            pady=10,
+            anchor="n"
         )
 
         # content
         content = Frame(self, name='content')
-        content.grid(
-            column=0,
-            row=1,
-            sticky="nsew"
-        )
+        content.pack(fill='both', expand=True)
         content.rowconfigure(0, weight=1)
         content.columnconfigure(0, weight=1)
         content.columnconfigure(1, weight=5)

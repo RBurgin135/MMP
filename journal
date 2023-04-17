@@ -47,14 +47,22 @@ continue working on incorporating training:
     create a custom dataset using Tensorflow.dataset.Dataset
     build a model using 1DBuild method
 add styling:
-    # text to have font size to reflect purpose
-    # background colour for shaded font and buttons
+    text to have font size to reflect purpose
+    background colour for shaded font and buttons
+    # make process screen title show the action taken
+    # make info frame consistent width
 add quality of life features:
     min size of window
 add ability to apply model:
     add model to apply to folder of images and output prediction
     add model to apply to one image and show result:
         add preview
-        # make it work
-        # add result screen
-redo journal to reflect actions taken on git
+        make it work
+        add result screen
+add robustness:
+    # error checking for inputs
+add functionality:
+    # make process screen output console
+    # abort terminates process
+
+verify git actions are in journal

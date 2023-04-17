@@ -40,7 +40,8 @@ class NoDataFrame(Frame):
         # title
         Label(
             master=self,
-            text="Apply Model"
+            text="Apply Model",
+            style='Title.TLabel'
         ).pack(
             padx=5,
             pady=15,
@@ -48,19 +49,21 @@ class NoDataFrame(Frame):
         )
 
         # no data image
+        image_frame = Frame(self, name='image_frame')
+        image_frame.pack(anchor='n', pady=125)
         self.no_data_image = tk.PhotoImage(file="GUI/assets/no_data.png")
         Label(
             name='no_data_image',
-            master=self,
+            master=image_frame,
             image=self.no_data_image
         ).pack(
             anchor="n",
             padx=5,
-            pady=10
+            pady=20
         )
         # no data message
         Label(
-            master=self,
+            master=image_frame,
             text="Load or train a model to begin"
         ).pack(
             anchor="n",

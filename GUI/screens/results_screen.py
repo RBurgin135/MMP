@@ -14,7 +14,8 @@ class ResultsScreen(Frame):
         Label(
             name='result_image_caption',
             master=self,
-            text='Result'
+            text='Result',
+            style='Title.TLabel'
         ).pack(
             padx=5,
             pady=10,
