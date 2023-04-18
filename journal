@@ -42,7 +42,7 @@ hooked up model to gui:
 navigation:
     redid navigation to be much faster
 
-21/03
+21/03 - Easter
 continue working on incorporating training:
     create a custom dataset using Tensorflow.dataset.Dataset
     build a model using 1DBuild method
@@ -50,7 +50,6 @@ add styling:
     text to have font size to reflect purpose
     background colour for shaded font and buttons
     make process screen title reflect the action
-    # make info frame consistent width
 add quality of life features:
     min size of window
 add ability to apply model:
@@ -64,16 +63,31 @@ add load and saving functionality:
     add functionality
     multithread
     add loading and saving splash screens
-add robustness error checking for inputs
-    # for training screen
-    for model save and load
-    # for apply to directory
-    # for apply to image
+
+18/04
 add functionality:
-    # make process screen output to console
+    # make process screen output console
     abort terminates process
-add comments and documentation:
-    # screens
-    # components
-    # model
-    # pca wavelet
+    # add progress indicator
+    # add model information to the info screen
+    # ask for output tensor or image
+polish:
+    # make info frame consistent width
+    add robustness error checking for inputs
+        # for training screen
+        for model save and load
+        # for apply to directory
+        # for apply to image
+    add comments and documentation:
+        # screens
+        # components
+        # model
+        # pca wavelet
+
+things to ask Bernie:
+    in my outline I stated that the user can choose several kinds of problems to solve, can I use this system for:
+        in-painting #admm code
+        point detection
+        semantic segmentation
+        superresolution
+    address email
