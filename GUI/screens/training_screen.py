@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter.ttk import *
 
 from GUI.components.path_frame import DirectoryPathFrame
-from GUI.components.util import SetToDefaultsButton
+from GUI.components.util import ClearAllButton
 
 
 class TrainingScreen(Frame):
@@ -37,11 +37,11 @@ class TrainingScreen(Frame):
         )
         Entry(
             master=content,
-            width=50,
+            width=25,
             textvariable=model_name
         ).pack(
             anchor="w",
-            padx=indent*2,
+            padx=indent * 2,
             pady=sub_gap
         )
 
@@ -79,6 +79,48 @@ class TrainingScreen(Frame):
             pady=sub_gap
         )
 
+        # count
+        count = tk.StringVar(value=str(100))
+        Label(
+            master=content,
+            text="Amount from dataset:"
+        ).pack(
+            anchor="w",
+            padx=indent,
+            pady=title_gap
+        )
+        Entry(
+            master=content,
+            width=10,
+            textvariable=count,
+            validatecommand=controller.register(lambda char: char.isdigit())
+        ).pack(
+            anchor="w",
+            padx=indent * 2,
+            pady=sub_gap
+        )
+
+        # layers
+        layers = tk.StringVar(value=str(4))
+        Label(
+            master=content,
+            text="Number of layers:"
+        ).pack(
+            anchor="w",
+            padx=indent,
+            pady=title_gap
+        )
+        Entry(
+            master=content,
+            width=10,
+            textvariable=layers,
+            validatecommand=controller.register(lambda char: char.isdigit())
+        ).pack(
+            anchor="w",
+            padx=indent * 2,
+            pady=sub_gap
+        )
+
         # action buttons
         ButtonFrame(
             master=self,
@@ -86,12 +128,23 @@ class TrainingScreen(Frame):
             variables=[
                 model_name,
                 input_path,
-                label_path
+                label_path,
+                count,
+                layers
             ],
             current_model=current_model
         ).pack(
             side="bottom",
             fill="both"
+        )
+
+        # error label
+        Label(
+            name='error_label',
+            master=self,
+            text=""
+        ).pack(
+            side='bottom'
         )
 
 
@@ -110,14 +163,20 @@ class ButtonFrame(Frame):
         ).pack(side='left')
 
         # set to defaults button
-        SetToDefaultsButton(
+        ClearAllButton(
             master=content,
             variables=variables
         ).pack(side='left')
 
         # train button
+        def train():
+            try:
+                current_model.create_new_model(variables)
+            except ValueError:
+                master.children['error_label'].configure(text='Invalid Inputs')
+
         Button(
             master=content,
             text="Train",
-            command=lambda: current_model.create_new_model(variables)
+            command=train
         ).pack(side='left')

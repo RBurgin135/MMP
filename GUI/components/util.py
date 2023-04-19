@@ -27,10 +27,10 @@ class FilePathButton(Button):
             **kwargs)
 
 
-class SetToDefaultsButton(Button):
+class ClearAllButton(Button):
     def __init__(self, variables, **kwargs):
         super().__init__(
-            text="Set to Defaults",
+            text="Clear All",
             command=lambda: reset(variables),
             **kwargs
         )

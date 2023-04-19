@@ -3,7 +3,7 @@ from tkinter.ttk import *
 
 from GUI.components.single_apply_frame import SingleApplyFrame
 from GUI.components.directory_apply_frame import DirectoryApplyFrame
-from GUI.components.util import SetToDefaultsButton
+from GUI.components.util import ClearAllButton
 
 
 class ModelApplyNotebook(Notebook):
@@ -80,7 +80,7 @@ class ButtonFrame(Frame):
 
         # content
         # set to defaults button
-        SetToDefaultsButton(
+        ClearAllButton(
             master=content,
             variables=variables
         ).pack(side='left')

@@ -14,9 +14,16 @@ from PCA_Wavelet_Codebase.custom_layers.symmetric_padding_2d import SymmetricPad
 
 class Model:
     def __init__(self, controller):
+        # info
         self.name = None
+        self.count = None
+        self.layers = None
         self.controller = controller
-        self.pca_wavelet_model = None
+
+        # networks
+        self.image_network = None
+        self.label_network = None
+        self.fully_connected = None
 
         # filesystem info
         self.filetypes = (
@@ -30,12 +37,17 @@ class Model:
         self.name = variables[0].get()
         images_path = variables[1].get()
         labels_path = variables[2].get()
+        self.count = int(variables[3].get())
+        self.layers = int(variables[4].get())
 
         # build
         thread = processes.Build(
             current_model=self,
             images_path=images_path,
-            labels_path=labels_path
+            labels_path=labels_path,
+            count=self.count,
+            layers=self.layers,
+            controller=self.controller
         )
         thread.start()
 
@@ -55,7 +67,8 @@ class Model:
         thread = processes.ApplyToDir(
             current_model=self,
             images_path=images_path,
-            output_path=output_path
+            output_path=output_path,
+            controller=self.controller
         )
         thread.start()
 
@@ -72,13 +85,13 @@ class Model:
 
         # apply
         image = cv2.imread(image_path)
-        prediction = self.pca_wavelet_model(np.reshape(image, (1, 64, 64, 3)))
+        # TODO prediction = self.pca_wavelet_model(np.reshape(image, (1, 64, 64, 3)))
 
         # navigate
         self.controller.navigate('result')
 
         # show result image
-        self.give_results_prediction(prediction)
+        #self.give_results_prediction(prediction)
 
     def save_model(self):
         # file system dialog
@@ -98,8 +111,8 @@ class Model:
 
         # multithread save
         def save():
-            self.pca_wavelet_model.compile(optimizer='adam', loss='categorical_crossentropy')
-            self.pca_wavelet_model.save(path)
+            # TODO self.pca_wavelet_model.compile(optimizer='adam', loss='categorical_crossentropy')
+            #self.pca_wavelet_model.save(path)
             self.controller.navigate('model')
 
         # start process
@@ -117,17 +130,17 @@ class Model:
 
         # multithread load
         def load():
-            try:
-                self.pca_wavelet_model = tf.keras.models.load_model(
-                    path,
-                    custom_objects={
-                        'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
-                        'MeanLayer': MeanLayer,
-                        'SymmetricPadding2D': SymmetricPadding2D
-                    }
-                )
-            except IOError:
-                pass
+            #try:
+            #    self.pca_wavelet_model = tf.keras.models.load_model(
+            #        path,
+            #        custom_objects={
+            #            'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
+            #            'MeanLayer': MeanLayer,
+            #            'SymmetricPadding2D': SymmetricPadding2D
+            #        }
+            #    )
+            #except IOError:
+            #    pass
             self.controller.navigate('model')
 
         # start process
@@ -161,7 +174,7 @@ class Model:
         results_screen.children['result_image'].configure(image=results_screen.show_image)
 
     def has_data(self):
-        return self.pca_wavelet_model is not None
+        return self.image_network is not None
 
     def get_info(self):
         return [

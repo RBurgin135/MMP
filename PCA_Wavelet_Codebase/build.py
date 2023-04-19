@@ -4,28 +4,56 @@ import numpy as np
 from PCA_Wavelet_Codebase.custom_layers.conv_2d_transpose_seperable_layer import Conv2DTransposeSeparableLayer
 from PCA_Wavelet_Codebase.custom_layers.mean_layer import MeanLayer
 from PCA_Wavelet_Codebase.custom_layers.symmetric_padding_2d import SymmetricPadding2D
-from PCA_Wavelet_Codebase.utils import preprocess_dataset, setupfilters3D, filterImg3D, addToPCA, completePCA
+from PCA_Wavelet_Codebase.utils import setupfilters3D, filterImg3D, addToPCA, completePCA
 
 
-def build_model(dataset):
-    tf.keras.backend.set_floatx('float64')
-    dataset_resize = preprocess_dataset(dataset)
+def map_fully_connected(image, image_network, inverse_label_network, A, bias):
+    decomp = image_network(image)
+    shape = decomp.shape
+    decomp = tf.reshape(decomp, [-1])
 
-    test_set = dataset_resize.take(500)
-    train_set = dataset_resize.skip(500)
-    head, inv_head = build1D(
-        dataset=train_set,
-        count=4,
-        samplesize=500,
-        keep_percent=1,
-        flip=False,
-        subtract_mean=True)
+    decomp = tf.linalg.matvec(A, decomp, transpose_a=True)
+    decomp = tf.math.add(decomp, bias)
+    pred = tf.reshape(decomp, [shape[0], shape[1], shape[2], -1])
 
-    print("model built successfully")
+    recon = inverse_label_network(pred)
+    return recon
 
-    #built_correctly(head, inv_head, train_set)
 
-    return head, inv_head
+def build_fully_connected(image_network, label_network, image_set, label_set):
+    it = iter(label_set)
+    firstit = True
+
+    for img in image_set:
+        pimg = next(it)
+        decomp = image_network(img)
+        pdecomp = label_network(pimg)
+        if (firstit):
+            firstit = False
+            channels = decomp.shape[1] * decomp.shape[2] * decomp.shape[3]
+            pchannels = pdecomp.shape[1] * pdecomp.shape[2] * pdecomp.shape[3]
+            totalcount = 0
+            xxt = tf.zeros([channels, channels], dtype=tf.float64)
+            yxt = tf.zeros([channels, pchannels], dtype=tf.float64)
+            y = tf.zeros([pchannels], dtype=tf.float64)
+            x = tf.zeros([channels], dtype=tf.float64)
+
+        totalcount += 1
+        mat = tf.reshape(decomp, [-1])
+        pmat = tf.reshape(pdecomp, [-1])
+        cov = tf.linalg.matmul([mat], [mat], transpose_a=True)
+        pcov = tf.linalg.matmul([mat], [pmat], transpose_a=True)
+        xxt = xxt + cov
+        yxt = yxt + pcov
+        x = x + mat
+        y = y + pmat
+
+    xxt = xxt - tf.linalg.matmul([x], [x], transpose_a=True) / totalcount
+    A = np.linalg.pinv(xxt)
+    yxt = yxt - tf.linalg.matmul([x], [y], transpose_a=True) / totalcount
+    A = A @ yxt
+    bias = (y - tf.linalg.matvec(A, x, transpose_a=True)) / totalcount
+    return A, bias
 
 
 def built_correctly(head, invhead, dataset):
@@ -69,9 +97,9 @@ def built_correctly(head, invhead, dataset):
     print("ncc = ", ncc)
 
 
-def build1D(dataset, channels=3, count=6, samplesize=-1, keep_percent=0.2, flip=False, activity_regularizer=None,
-            inverse_activity_regularizer=None, activation_before=False, subtract_mean=True):
-    keep_percent = 4.0 / 9.0 * pow(keep_percent, 1 / float(count))
+def build_1d(dataset, channels=3, layers=6, samplesize=-1, keep_percent=0.2, flip=False, activity_regularizer=None,
+             inverse_activity_regularizer=None, activation_before=False, subtract_mean=True):
+    keep_percent = 4.0 / 9.0 * pow(keep_percent, 1 / float(layers))
     print("keep_percent", keep_percent)
     head = tf.keras.Sequential()
     head.run_eagerly = True
@@ -104,7 +132,7 @@ def build1D(dataset, channels=3, count=6, samplesize=-1, keep_percent=0.2, flip=
         head.add(MeanLayer(-meanimg))
         invlist.append(MeanLayer(meanimg))
 
-    for lev in range(count):
+    for lev in range(layers):
         outchan = channels * 9
         pca = tf.zeros([outchan, outchan], dtype=tf.float64)
         mean = tf.zeros(outchan, dtype=tf.float64)

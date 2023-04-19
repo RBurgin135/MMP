@@ -25,7 +25,7 @@ class ModelScreen(Frame):
         )
 
         # model application frame
-        if current_model.pca_wavelet_model is not None:
+        if current_model.has_data():
             ModelApplyNotebook(
                 master=self,
                 controller=controller,

@@ -4,24 +4,21 @@ import numpy as np
 IMAGE_SIZE = 64
 
 
-def preprocess_dataset(dataset):
-    processed_data = [[pre_process_image(x['image'])] for x in dataset]
+def preprocess_dataset(dataset, key):
+    print('preprocessing dataset')
+    processed_data = [[pre_process_image(x[key])] for x in dataset]
     processed_dataset = tf.data.Dataset.from_tensor_slices(processed_data)
 
     return processed_dataset
 
 
 def pre_process_image(image):
-    print("pre_process image.shape", image.shape)
     image = tf.cast(image, tf.float64)
     image = image / 255.0
-    print("pre_process image.shape resized", image.shape, image.dtype)
     # image = tf.image.central_crop(image,0.5)
     image = tf.image.resize(image, (IMAGE_SIZE, IMAGE_SIZE))  # resize changes type to float32!
 
-    print("pre_process image.shape resized", image.shape, image.dtype)
     image = tf.cast(image, tf.float64)
-    print("pre_process image.shape resized", image.shape, image.dtype)
 
     return image
 

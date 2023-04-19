@@ -47,5 +47,4 @@ class ButtonFrame(Frame):
                 title="Confirm Abort",
                 message="Are you sure you want to abort the process? All progress will be lost",
                 default=messagebox.NO):
-            self.controller.navigate("model")
             self.process.abort()

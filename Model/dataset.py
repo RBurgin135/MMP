@@ -24,11 +24,11 @@ def create_dataset(images_path, labels_path):
             img = img.astype(np.float32) / 255.
 
             # load label
-            label = cv2.imread(f'{labels_path}/{filename}', cv2.IMREAD_GRAYSCALE)
+            label = cv2.imread(f'{labels_path}/{filename}')
             if label is None:
                 print(f"No equivalent label file, with path: {labels_path}/{filename}")
+            label = cv2.cvtColor(label, cv2.COLOR_BGR2RGB)
             label = label.astype(np.float32) / 255.
-            label = np.expand_dims(label, axis=-1)
 
             # create dictionary
             yield {'image': img, 'label': label}

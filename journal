@@ -73,6 +73,8 @@ add functionality:
     # ask for output tensor or image
 polish:
     # make info frame consistent width
+    # make process screen put the title on the right panel
+    # add error labels to error checking
     add robustness error checking for inputs
         # for training screen
         for model save and load
