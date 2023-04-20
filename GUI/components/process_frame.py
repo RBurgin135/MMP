@@ -6,6 +6,17 @@ class ProcessFrame(Frame):
     def __init__(self, master, controller, **kwargs):
         super().__init__(master, name='process_frame', **kwargs)
 
+        # title
+        Label(
+            name='title',
+            master=self,
+            text="Process",
+            style='Title.TLabel'
+        ).pack(
+            pady=10,
+            anchor="n"
+        )
+
         # content
         ButtonFrame(
             master=self,
