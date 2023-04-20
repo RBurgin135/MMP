@@ -7,8 +7,8 @@ import numpy as np
 import tensorflow as tf
 
 from Model.dataset import create_dataset
-from PCA_Wavelet_Codebase.build import build_1d, build_fully_connected
-from PCA_Wavelet_Codebase.utils import preprocess_dataset
+from PCA_Wavelet_Codebase.build import build_1d, build_fully_connected, map_fully_connected
+from PCA_Wavelet_Codebase.utils import preprocess_dataset, pre_process_image
 
 
 class Process(threading.Thread):
@@ -28,8 +28,8 @@ class Process(threading.Thread):
             )
 
     def configure_process_screen_buttons(self, process_done):
-        buttons = self.model.controller.children['process_screen'].children['content'] \
-            .children['process_frame'].children['button_frame'].children['content']
+        buttons = self.model.controller.children['process_screen'].children['process_frame']\
+            .children['button_frame'].children['content']
         buttons.children['done_button'].configure(state='enabled' if process_done else 'disabled')
         buttons.children['abort_button'].configure(state='disabled' if process_done else 'enabled')
 
@@ -124,15 +124,23 @@ class ApplyToDir(Process):
             # apply
             try:
                 image = cv2.imread(self.images_path + x)
+                image = image[np.newaxis, ...]
+                image = pre_process_image(image)
+
+                reconstructed = map_fully_connected(
+                    image=image,
+                    image_network=self.model.image_network[0],
+                    inverse_label_network=self.model.label_network[1],
+                    A=self.model.fully_connected[0],
+                    bias=self.model.fully_connected[1]
+                )
+
+                # save
+                reconstructed = np.uint8(np.squeeze(np.array(reconstructed)))
+                cv2.imwrite(self.output_path + x, reconstructed)
+                print(f"finished: {x}")
             except Exception:
                 self.abort(notify=True)
-            # TODO prediction = self.model.pca_wavelet_model(
-            #    np.reshape(image, (1, 64, 64, 3))
-            #)
-
-            # save
-            #cv2.imwrite(self.output_path + x, np.array(prediction[0, :, :, 1] * 255))
-            print(f"finished: {x}")
 
         # configure buttons
         self.configure_process_screen_buttons(process_done=True)

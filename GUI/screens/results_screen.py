@@ -65,7 +65,8 @@ class ButtonFrame(Frame):
                     ('PNG files', '*.png'),
                     ('JPG files', '*.jpg'),
                     ('All files', '*')
-                )
+                ),
+                defaultextension='.png'
             )
             # save
             cv2.imwrite(path, self.cv2_image)

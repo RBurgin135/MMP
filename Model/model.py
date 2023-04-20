@@ -3,13 +3,11 @@ from tkinter import filedialog
 
 import cv2
 import numpy as np
-import tensorflow as tf
 from PIL import ImageTk, Image
 
 from Model import processes
-from PCA_Wavelet_Codebase.custom_layers.conv_2d_transpose_seperable_layer import Conv2DTransposeSeparableLayer
-from PCA_Wavelet_Codebase.custom_layers.mean_layer import MeanLayer
-from PCA_Wavelet_Codebase.custom_layers.symmetric_padding_2d import SymmetricPadding2D
+from PCA_Wavelet_Codebase.build import map_fully_connected
+from PCA_Wavelet_Codebase.utils import pre_process_image
 
 
 class Model:
@@ -85,13 +83,22 @@ class Model:
 
         # apply
         image = cv2.imread(image_path)
-        # TODO prediction = self.pca_wavelet_model(np.reshape(image, (1, 64, 64, 3)))
+        image = image[np.newaxis, ...]
+        image = pre_process_image(image)
+
+        reconstructed = map_fully_connected(
+            image=image,
+            image_network=self.image_network[0],
+            inverse_label_network=self.label_network[1],
+            A=self.fully_connected[0],
+            bias=self.fully_connected[1]
+        )
 
         # navigate
         self.controller.navigate('result')
 
         # show result image
-        #self.give_results_prediction(prediction)
+        self.give_results_prediction(reconstructed)
 
     def save_model(self):
         # file system dialog
@@ -150,12 +157,11 @@ class Model:
 
     def give_process_info(self, title, process):
         # set title
-        process_screen = self.controller.children['process_screen']
-        process_screen.children['title'].configure(text=title)
+        process_frame = self.controller.children['process_screen'].children['process_frame']
+        process_frame.children['title'].configure(text=title)
 
         # set process
-        button_frame = process_screen.children['content']\
-            .children['process_frame'].children['button_frame']
+        button_frame = process_frame.children['button_frame']
         button_frame.process = process
 
     def give_results_prediction(self, prediction):
@@ -163,9 +169,12 @@ class Model:
         results_screen = self.controller.children['results_screen']
         button_frame = results_screen.children['button_frame']
 
+        # convert types
+        prediction = np.uint8(np.squeeze(np.array(prediction)))
+
         # take images
-        button_frame.cv2_image = np.array(prediction[0, :, :, 1] * 255)
-        image = Image.fromarray(button_frame.cv2_image)
+        button_frame.cv2_image = prediction
+        image = Image.fromarray(prediction)
         results_screen.show_image = ImageTk.PhotoImage(
             image=image.resize((200, 200), Image.NEAREST)
         )

@@ -47,6 +47,7 @@ def build_fully_connected(image_network, label_network, image_set, label_set):
         yxt = yxt + pcov
         x = x + mat
         y = y + pmat
+        print("processed image")
 
     xxt = xxt - tf.linalg.matmul([x], [x], transpose_a=True) / totalcount
     A = np.linalg.pinv(xxt)
