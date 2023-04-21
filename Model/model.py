@@ -170,7 +170,7 @@ class Model:
         button_frame = results_screen.children['button_frame']
 
         # convert types
-        prediction = np.uint8(np.squeeze(np.array(prediction)))
+        prediction = np.uint8(np.squeeze(np.array(prediction*255)))
 
         # take images
         button_frame.cv2_image = prediction

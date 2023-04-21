@@ -17,6 +17,12 @@ class ProcessFrame(Frame):
             anchor="n"
         )
 
+        # console
+        #Console.initialise_widget(self).pack(
+        #    pady=10,
+        #    anchor='n'
+        #)
+
         # content
         ButtonFrame(
             master=self,

@@ -23,6 +23,8 @@ def map_fully_connected(image, image_network, inverse_label_network, A, bias):
 def build_fully_connected(image_network, label_network, image_set, label_set):
     it = iter(label_set)
     firstit = True
+    total = len(image_set)
+    count = 0
 
     for img in image_set:
         pimg = next(it)
@@ -47,13 +49,20 @@ def build_fully_connected(image_network, label_network, image_set, label_set):
         yxt = yxt + pcov
         x = x + mat
         y = y + pmat
-        print("processed image")
 
+        count += 1
+        print(f"training: {round((count/total)*100)}%")
+
+    print("training complete")
+    print("calculating xxt")
     xxt = xxt - tf.linalg.matmul([x], [x], transpose_a=True) / totalcount
     A = np.linalg.pinv(xxt)
+    print("calculating yxt")
     yxt = yxt - tf.linalg.matmul([x], [y], transpose_a=True) / totalcount
     A = A @ yxt
+    print("calculating bias")
     bias = (y - tf.linalg.matvec(A, x, transpose_a=True)) / totalcount
+    print("fully connected built")
     return A, bias
 
 
