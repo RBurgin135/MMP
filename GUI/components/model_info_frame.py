@@ -35,16 +35,16 @@ class ModelInfoFrame(Frame):
             )
 
         # buttons
-        if use_buttons:
-            ButtonFrame(
-                master=self,
-                controller=controller,
-                current_model=current_model,
-                style='ShadedButton.TButton'
-            ).pack(
-                side="bottom",
-                fill="both"
-            )
+        ButtonFrame(
+            master=self,
+            controller=controller,
+            current_model=current_model,
+            style='ShadedButton.TButton',
+            use_buttons=use_buttons
+        ).pack(
+            side="bottom",
+            fill="both"
+        )
 
 
 class ModelInfo(Frame):
@@ -73,7 +73,7 @@ class ModelInfo(Frame):
 
 
 class ButtonFrame(Frame):
-    def __init__(self, master, controller, current_model, style, **kwargs):
+    def __init__(self, master, controller, current_model, style, use_buttons, **kwargs):
         super().__init__(master, name='button_frame', style='ShadedFrame.TFrame', **kwargs)
         content = Frame(self, name="content")
         content.pack()
@@ -85,6 +85,7 @@ class ButtonFrame(Frame):
             master=content,
             text="New",
             command=lambda: controller.navigate("training"),
+            state='normal' if use_buttons else 'disabled',
             style=style
         ).pack(side='left')
 
@@ -94,7 +95,7 @@ class ButtonFrame(Frame):
             master=content,
             text="Save",
             command=current_model.save_model,
-            state="normal" if current_model.has_data() else"disabled",
+            state='normal' if use_buttons and current_model.has_data() else 'disabled',
             style=style
         ).pack(side='left')
 
@@ -104,5 +105,6 @@ class ButtonFrame(Frame):
             master=content,
             text="Load",
             command=current_model.load_model,
+            state='normal' if use_buttons else 'disabled',
             style=style
         ).pack(side='left')
