@@ -1,6 +1,8 @@
 from tkinter.ttk import *
 from tkinter import messagebox
 
+from GUI.screens.console import Console
+
 
 class ProcessFrame(Frame):
     def __init__(self, master, controller, **kwargs):
@@ -18,10 +20,12 @@ class ProcessFrame(Frame):
         )
 
         # console
-        #Console.initialise_widget(self).pack(
-        #    pady=10,
-        #    anchor='n'
-        #)
+        Console.initialise_widget(
+            master=self
+        ).pack(
+            pady=10,
+            anchor='n'
+        )
 
         # content
         ButtonFrame(

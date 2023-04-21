@@ -5,7 +5,6 @@ IMAGE_SIZE = 64
 
 
 def preprocess_dataset(dataset, key):
-    print('preprocessing dataset')
     processed_data = [[pre_process_image(x[key])] for x in dataset]
     processed_dataset = tf.data.Dataset.from_tensor_slices(processed_data)
 

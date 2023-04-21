@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 
+from GUI.screens.console import Console
 from PCA_Wavelet_Codebase.custom_layers.conv_2d_transpose_seperable_layer import Conv2DTransposeSeparableLayer
 from PCA_Wavelet_Codebase.custom_layers.mean_layer import MeanLayer
 from PCA_Wavelet_Codebase.custom_layers.symmetric_padding_2d import SymmetricPadding2D
@@ -51,66 +52,25 @@ def build_fully_connected(image_network, label_network, image_set, label_set):
         y = y + pmat
 
         count += 1
-        print(f"training: {round((count/total)*100)}%")
+        Console.print(f"training: {round((count/total)*100)}%")
 
-    print("training complete")
-    print("calculating xxt")
+    Console.print("training complete")
+    Console.print("calculating xxt")
     xxt = xxt - tf.linalg.matmul([x], [x], transpose_a=True) / totalcount
     A = np.linalg.pinv(xxt)
-    print("calculating yxt")
+    Console.print("calculating yxt")
     yxt = yxt - tf.linalg.matmul([x], [y], transpose_a=True) / totalcount
     A = A @ yxt
-    print("calculating bias")
+    Console.print("calculating bias")
     bias = (y - tf.linalg.matvec(A, x, transpose_a=True)) / totalcount
-    print("fully connected built")
+    Console.print("fully connected built")
     return A, bias
-
-
-def built_correctly(head, invhead, dataset):
-    import matplotlib.pyplot as plt
-
-    plt.subplot(221)
-    plt.title('Original')
-    sample = next(iter(dataset.shuffle(20)))[0]
-
-    plt.imshow(sample*255)
-    print("sample.shape", sample.shape)
-
-    img = tf.transpose([sample], [0, 1, 2, 3])
-    print("img.shape", img.shape)
-
-    pred = head(img)
-    print("pred.shape", pred.shape)
-
-    plt.subplot(222)
-    plt.title('Slice')
-    plt.imshow(pred[0, :, :, 1] * 5*255, cmap='gray', vmin=0, vmax=1)
-    plt.subplot(223)
-    plt.title('Slice')
-    plt.imshow(pred[0, :, :, 2] * 5*255, cmap='gray', vmin=0, vmax=1)
-
-    print("pred.shape", pred.shape)
-
-    recon = invhead(pred)[0]
-    print("recon.shape", recon.shape)
-    plt.subplot(224)
-    plt.title('Filtered')
-    plt.imshow(recon*255)
-    plt.show()
-    print("sample.dtype", sample.dtype)
-    print("recon[0].dtype", recon.dtype)
-
-    print("np.prod(sample.shape)", np.prod(sample.shape))
-    psnr = 10 * np.log10(1.0 / ((np.linalg.norm(recon - sample) ** 2) / np.prod(sample.shape)))  # changed
-    ncc = np.corrcoef(tf.reshape(sample, [-1]), tf.reshape(recon, [-1]))
-    print("psnr = ", psnr)
-    print("ncc = ", ncc)
 
 
 def build_1d(dataset, channels=3, layers=6, samplesize=-1, keep_percent=0.2, flip=False, activity_regularizer=None,
              inverse_activity_regularizer=None, activation_before=False, subtract_mean=True):
     keep_percent = 4.0 / 9.0 * pow(keep_percent, 1 / float(layers))
-    print("keep_percent", keep_percent)
+    Console.print(f"keep_percent {keep_percent}")
     head = tf.keras.Sequential()
     head.run_eagerly = True
     invhead = tf.keras.Sequential()
@@ -126,7 +86,7 @@ def build_1d(dataset, channels=3, layers=6, samplesize=-1, keep_percent=0.2, fli
         flipped = subset.map(lambda x, y: reverse(x, y))
         subset = subset.concatenate(flipped)
         samplesize *= 2
-    print("subset size", len(list(subset)))
+    Console.print(f"subset size {len(list(subset))}")
     it = iter(subset)
     meanimg = tf.cast(next(it)[0], tf.float64)
     sizex = meanimg.shape[1]
@@ -136,7 +96,7 @@ def build_1d(dataset, channels=3, layers=6, samplesize=-1, keep_percent=0.2, fli
 
     for i in range(1, samplesize):
         meanimg += tf.cast(next(it)[0], tf.float64)
-    print("meanimg.dtype", meanimg.dtype)
+    Console.print(f"meanimg.dtype {meanimg.dtype}")
     meanimg /= float(samplesize)
     if (subtract_mean):
         head.add(MeanLayer(-meanimg))
@@ -157,10 +117,10 @@ def build_1d(dataset, channels=3, layers=6, samplesize=-1, keep_percent=0.2, fli
             pred = head(img)[0]
             filtered = filterImg3D(pred, filts=filts3D)
             pca, mean = addToPCA(filtered, pca, mean)
-        print("Completing", newsizex)
+        Console.print(f"Completing {newsizex}")
         pca = pca / float(newsizex * newsizey * samplesize)
         mean /= float(newsizex * newsizey * samplesize)
-        print("pca shape", tf.shape(pca))
+        Console.print(f"pca shape {tf.shape(pca)}")
         s, u = completePCA(pca, mean)
         keep_channels = int(keep_percent * u.shape[1])
         var_explained = 0
@@ -168,16 +128,16 @@ def build_1d(dataset, channels=3, layers=6, samplesize=-1, keep_percent=0.2, fli
         s = s / var_total
         var_total_post = tf.math.reduce_sum(s, 0)
         keep_max = channels * (IMAGE_SIZE_Y / filtered.shape[0]) * (IMAGE_SIZE_X / filtered.shape[1])
-        print("keep_channels", keep_channels, "keep_max", keep_max)
+        Console.print(f"keep_channels {keep_channels}, keep_max {keep_max}")
         compcount = 0
         while var_explained < 1.0 and compcount < keep_max and compcount < keep_channels:
             var_explained += s[compcount]
             compcount += 1
 
         keep_channels = compcount
-        print("keep_channels", keep_channels)
+        Console.print(f"keep_channels {keep_channels}")
         ufilts = tf.transpose([[[u[:, 0:keep_channels]]]], [0, 1, 2, 3, 4])
-        print("ufilts.shape", ufilts.shape)
+        Console.print(f"ufilts.shape {ufilts.shape}")
 
         filts3D = tf.transpose([filts3D], [0, 3, 1, 2, 4])
         newfilt = tf.nn.conv3d(filts3D, ufilts, [1, 1, 1, 1, 1], 'VALID', data_format='NDHWC')
@@ -213,7 +173,7 @@ def build_1d(dataset, channels=3, layers=6, samplesize=-1, keep_percent=0.2, fli
         channels = keep_channels
         sizex = newsizex
         sizey = newsizey
-        print("end loop", sizex)
+        Console.print(f"end loop {sizex}")
 
     it = reversed(invlist)
     for e in it:
