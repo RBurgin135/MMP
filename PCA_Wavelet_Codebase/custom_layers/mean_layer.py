@@ -6,7 +6,6 @@ class MeanLayer(tf.keras.layers.Layer):
         super(MeanLayer, self).__init__()
         self.mean = tf.keras.backend.variable(tf.keras.backend.cast_to_floatx(mean),
                                               dtype='float64')  # [0:mean.shape[0],0:mean.shape[1],0:mean.shape[2]]
-        print("self.mean.dtype", self.mean.dtype)
         super(MeanLayer, self).__init__(**kwargs)
 
     def call(self, inputs):

@@ -1,7 +1,7 @@
 from tkinter.ttk import *
 from tkinter import messagebox
 
-from GUI.screens.console import Console
+from GUI.utility.console import Console
 
 
 class ProcessFrame(Frame):
@@ -15,13 +15,15 @@ class ProcessFrame(Frame):
             text="Process",
             style='Title.TLabel'
         ).pack(
-            pady=10,
+            pady=20,
             anchor="n"
         )
 
         # console
         Console.initialise_widget(
-            master=self
+            master=self,
+            height=20,
+            width=73
         ).pack(
             pady=10,
             anchor='n'

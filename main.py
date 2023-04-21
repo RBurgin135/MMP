@@ -1,8 +1,8 @@
 from tkinter import *
 from ctypes import windll
 
-from GUI.screens import navigation
-from GUI.screens.styling import styling
+from GUI.utility import navigation
+from GUI.utility.styling import styling
 from Model.model import Model
 
 windll.shcore.SetProcessDpiAwareness(1)

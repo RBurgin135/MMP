@@ -4,7 +4,7 @@ import cv2
 import tensorflow as tf
 import os
 
-from GUI.screens.console import Console
+from GUI.utility.console import Console
 
 # set parameters
 image_size = (64, 64)
@@ -21,14 +21,14 @@ def create_dataset(images_path, labels_path):
             # load image
             img = cv2.imread(f'{images_path}/{filename}')
             if img is None:
-                Console.print(f"Error loading image, with path: {images_path}/{filename}")
+                Console.write(f"Error loading image, with path: {images_path}/{filename}")
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = img.astype(np.float32) / 255.
 
             # load label
             label = cv2.imread(f'{labels_path}/{filename}')
             if label is None:
-                Console.print(f"No equivalent label file, with path: {labels_path}/{filename}")
+                Console.write(f"No equivalent label file, with path: {labels_path}/{filename}")
             label = cv2.cvtColor(label, cv2.COLOR_BGR2RGB)
             label = label.astype(np.float32) / 255.
 
