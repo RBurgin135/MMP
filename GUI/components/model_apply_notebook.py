@@ -92,31 +92,3 @@ class ButtonFrame(Frame):
             text="Begin",
             command=command
         ).pack(side='left')
-
-
-class OutputTypeFrame(Frame):
-    def __init__(self, text_variable, **kwargs):
-        super().__init__(**kwargs)
-
-        # options
-        options = [
-            "",
-            "Segmentation mask",
-            "Point map",
-            "etc"
-        ]
-        text_variable.set(options[0])
-
-        # content
-        # label
-        Label(
-            master=self,
-            text="Output Type:"
-        ).pack(side='left')
-        # option menu
-        OptionMenu(
-            self,
-            text_variable,
-            *options,
-            command=lambda x: print(x)
-        ).pack(side='left')

@@ -62,12 +62,14 @@ class Model:
         # extract from variables
         images_path = variables[0].get() + '/'
         output_path = variables[1].get() + '/'
+        output_tensor = variables[2].get()
 
         # apply
         thread = processes.ApplyToDir(
             current_model=self,
             images_path=images_path,
             output_path=output_path,
+            output_tensor=output_tensor,
             controller=self.controller
         )
         thread.start()

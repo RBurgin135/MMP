@@ -111,14 +111,15 @@ class Build(Process):
 
 
 class ApplyToDir(Process):
-    def __init__(self, current_model, images_path, output_path, controller):
+    def __init__(self, current_model, images_path, output_path, output_tensor, controller):
         super().__init__(current_model, controller)
         self.images_path = images_path
         self.output_path = output_path
+        self.output_tensor = output_tensor
 
     def run(self):
         # iterate over images
-        for x in os.listdir(self.images_path):
+        for i, x in enumerate(os.listdir(self.images_path)):
             # abort check
             if self.abort_check(): return
 
@@ -137,8 +138,11 @@ class ApplyToDir(Process):
                 )
 
                 # save
-                reconstructed = np.uint8(np.squeeze(np.array(reconstructed*255)))
-                cv2.imwrite(self.output_path + x, reconstructed)
+                if self.output_tensor:
+                    np.save(self.output_path + str(i), np.array(reconstructed))
+                else:
+                    reconstructed = np.uint8(np.squeeze(np.array(reconstructed*255)))
+                    cv2.imwrite(self.output_path + x, reconstructed)
                 Console.write(f"applied to: {x}")
             except Exception:
                 self.abort(notify=True)

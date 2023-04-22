@@ -46,8 +46,20 @@ class DirectoryApplyFrame(Frame):
             anchor="n"
         )
 
+        # output tensor
+        output_tensor = tk.BooleanVar(value=False)
+        Checkbutton(
+            master=self,
+            text='Output tensor',
+            variable=output_tensor
+        ).pack(
+            padx=10,
+            pady=3,
+            anchor="n"
+        )
+
         # action button frame
-        variables = [dataset_path, output_path]
+        variables = [dataset_path, output_path, output_tensor]
         button_frame(
             master=self,
             controller=controller,

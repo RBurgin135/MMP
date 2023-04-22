@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import filedialog
 from tkinter.ttk import *
 
@@ -38,4 +39,5 @@ class ClearAllButton(Button):
 
 def reset(variables):
     for v in variables:
-        v.set("")
+        if isinstance(v, tk.StringVar):
+            v.set("")
