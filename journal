@@ -69,7 +69,7 @@ add functionality:
     make process screen output console
     abort terminates process
     add model information to the info screen
-    # ask for output tensor or image
+    ask for output tensor or image
     redo load
     redo save
 polish:
