@@ -1,6 +1,7 @@
 from tkinter import filedialog
 from tkinter.ttk import *
 import cv2
+import numpy as np
 
 
 class ResultsScreen(Frame):
@@ -46,6 +47,7 @@ class ButtonFrame(Frame):
         content = Frame(self, name='content')
         content.pack()
         self.cv2_image = None
+        self.tensor = None
 
         # content
         # back
@@ -70,12 +72,33 @@ class ButtonFrame(Frame):
             )
             # save
             cv2.imwrite(path, self.cv2_image)
-        # save
+        # save image
         Button(
-            name='save_button',
+            name='save_image_button',
             master=content,
-            text="Save",
+            text="Save Image",
             command=save_image
+        ).pack(side='left')
+
+        def save_tensor():
+            # file system dialog
+            path = filedialog.asksaveasfilename(
+                title="Save a model",
+                initialdir="",
+                filetypes=(
+                    ('NumPy files', '*.npy'),
+                    ('All files', '*')
+                ),
+                defaultextension='.npy'
+            )
+            # save
+            np.save(path, self.tensor)
+        # save tensor
+        Button(
+            name='save_tensor_button',
+            master=content,
+            text="Save Tensor",
+            command=save_tensor
         ).pack(side='left')
 
 
