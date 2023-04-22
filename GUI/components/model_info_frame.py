@@ -57,8 +57,9 @@ class ModelInfo(Frame):
             Label(
                 master=self,
                 text=header_text,
-                style='ShadedTitle.TLabel'
+                style='ShadedText.TLabel'
             ).pack(
+                padx=10,
                 anchor='w'
             )
             for t in text:
@@ -68,7 +69,7 @@ class ModelInfo(Frame):
                     style='ShadedText.TLabel'
                 ).pack(
                     anchor='w',
-                    padx=10
+                    padx=35
                 )
 
 

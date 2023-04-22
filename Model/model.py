@@ -6,6 +6,7 @@ import numpy as np
 from PIL import ImageTk, Image
 
 from Model import processes
+from Model.persistence import Save, Load
 from PCA_Wavelet_Codebase.build import map_fully_connected
 from PCA_Wavelet_Codebase.utils import pre_process_image
 
@@ -24,8 +25,9 @@ class Model:
         self.fully_connected = None
 
         # filesystem info
+        self.default_extension = ''
         self.filetypes = (
-            ('HDF5 files', '*.h5'),
+            ('Tensorflow Saved Models', f'*{self.default_extension}'),
             ('All files', '*')
         )
         self.initial_dir = ""
@@ -105,26 +107,24 @@ class Model:
         path = filedialog.asksaveasfilename(
             title="Save a model",
             initialdir=self.initial_dir,
-            filetypes=self.filetypes
+            filetypes=self.filetypes,
+            defaultextension=self.default_extension
         )
 
         # error checking
         if path == "" or path is None:
             return
 
-        # add file type
-        if path.split('.')[-1] != 'h5':
-            path += '.h5'
-
-        # multithread save
-        def save():
-            # TODO self.pca_wavelet_model.compile(optimizer='adam', loss='categorical_crossentropy')
-            #self.pca_wavelet_model.save(path)
-            self.controller.navigate('model')
-
         # start process
         self.controller.navigate('saving')
-        thread = threading.Thread(target=save)
+        thread = Save(
+            path=path,
+            controller=self.controller,
+            image_net=self.image_network,
+            label_net=self.label_network,
+            fully_connected=self.fully_connected,
+            extra_data=self.get_meta_data()
+        )
         thread.start()
 
     def load_model(self):
@@ -132,27 +132,16 @@ class Model:
         path = filedialog.askopenfilename(
             title="Load a model",
             initialdir=self.initial_dir,
-            filetypes=self.filetypes
+            filetypes=self.filetypes,
+            defaultextension=self.default_extension
         )
-
-        # multithread load
-        def load():
-            #try:
-            #    self.pca_wavelet_model = tf.keras.models.load_model(
-            #        path,
-            #        custom_objects={
-            #            'Conv2DTransposeSeparableLayer': Conv2DTransposeSeparableLayer,
-            #            'MeanLayer': MeanLayer,
-            #            'SymmetricPadding2D': SymmetricPadding2D
-            #        }
-            #    )
-            #except IOError:
-            #    pass
-            self.controller.navigate('model')
 
         # start process
         self.controller.navigate('loading')
-        thread = threading.Thread(target=load)
+        thread = Load(
+            controller=self.controller,
+            path=path
+        )
         thread.start()
 
     def give_process_info(self, title, process):
@@ -170,7 +159,7 @@ class Model:
         button_frame = results_screen.children['button_frame']
 
         # convert types
-        prediction = np.uint8(np.squeeze(np.array(prediction*255)))
+        prediction = np.uint8(np.squeeze(np.array(prediction * 255)))
 
         # take images
         button_frame.cv2_image = prediction
@@ -183,11 +172,17 @@ class Model:
         results_screen.children['result_image'].configure(image=results_screen.show_image)
 
     def has_data(self):
-        return self.image_network is not None
+        return self.name is not None or self.image_network is not None
+
+    def get_meta_data(self):
+        return [self.name, self.layers, self.count]
 
     def get_info(self):
         return [
             ("Name: ",
              [self.name]
+             ),
+            ("Parameters: ",
+             [f'Layers: {self.layers}', f'No. from dataset: {self.count}']
              )
         ]
