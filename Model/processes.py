@@ -55,11 +55,13 @@ class Build(Process):
 
         # build
         try:
-            i_n, l_n, f_c = self.build_model()
+            i_n, l_n, f_c, dataset = self.build_model()
             if self.abort_check(): return
             self.model.image_network = i_n
             self.model.label_network = l_n
             self.model.fully_connected = f_c
+            self.model.image_dataset = dataset[0]
+            self.model.label_dataset = dataset[1]
         except Exception:
             self.abort(notify=True)
         Console.write("model built successfully")
@@ -107,7 +109,7 @@ class Build(Process):
         if self.abort_check(): return None, None, None
         Console.write("built fully connected network")
 
-        return (image_head, image_inv_head), (label_head, label_inv_head), (A, bias)
+        return (image_head, image_inv_head), (label_head, label_inv_head), (A, bias), (image_set, label_set)
 
 
 class ApplyToDir(Process):

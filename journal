@@ -85,3 +85,5 @@ polish:
         # components
         # model
         # pca wavelet
+    # check error checking
+    # remove placeholder auto-fills

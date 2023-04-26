@@ -23,6 +23,10 @@ class Model:
         self.label_network = None
         self.fully_connected = None
 
+        # datasets
+        self.image_dataset = None
+        self.label_dataset = None
+
         # filesystem info
         self.default_extension = ''
         self.filetypes = (
@@ -124,23 +128,24 @@ class Model:
             image_net=self.image_network,
             label_net=self.label_network,
             fully_connected=self.fully_connected,
-            extra_data=self.get_meta_data()
+            extra_data=self.get_meta_data(),
+            image_dataset=self.image_dataset,
+            label_dataset=self.label_dataset
         )
         thread.start()
 
     def load_model(self):
         # file system dialog
-        path = filedialog.askopenfilename(
+        path = filedialog.askdirectory(
             title="Load a model",
-            initialdir=self.initial_dir,
-            filetypes=self.filetypes,
-            defaultextension=self.default_extension
+            initialdir=self.initial_dir
         )
 
         # start process
         self.controller.navigate('loading')
         thread = Load(
             controller=self.controller,
+            model=self,
             path=path
         )
         thread.start()
@@ -174,11 +179,21 @@ class Model:
         # reconfigure result image
         results_screen.children['result_image'].configure(image=results_screen.show_image)
 
+    def reset_nets(self):
+        self.image_network = None
+        self.label_network = None
+        self.fully_connected = None
+
     def has_data(self):
         return self.name is not None or self.image_network is not None
 
     def get_meta_data(self):
         return [self.name, self.layers, self.count]
+
+    def take_meta_data(self, extra_data):
+        self.name = extra_data[0]
+        self.layers = extra_data[1]
+        self.count = extra_data[2]
 
     def get_info(self):
         return [

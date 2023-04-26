@@ -5,9 +5,13 @@ from PCA_Wavelet_Codebase.utils import setupFilts1D, borderMultiplier
 
 class Conv2DTransposeSeparableLayer(tf.keras.layers.Layer):
 
+    @property
+    def input_shape(self):
+        return self._input_shape
+
     def __init__(self, input_shape, **kwargs):
         self.filters, self.invfilters = setupFilts1D()
-        # print("input_shape",input_shape)
+        self.input_shape = input_shape
         self.input_shapeX = [input_shape[0], input_shape[1] + 6, int(input_shape[2])]
         self.tfmultx = borderMultiplier(self.input_shapeX, True)
         self.input_shapeY = [input_shape[0] + 6, input_shape[1] * 2, int(input_shape[2] / 3)]
@@ -16,10 +20,7 @@ class Conv2DTransposeSeparableLayer(tf.keras.layers.Layer):
         super(Conv2DTransposeSeparableLayer, self).__init__(**kwargs)
 
     def get_config(self):
-        return {'input_shapeX': self.input_shapeX,
-                'tfmultx': self.tfmultx,
-                'input_shapeY': self.input_shapeY,
-                'tfmulty': self.tfmulty}
+        return {'input_shape': self.input_shape}
 
     def build(self, input_shape):
         super(Conv2DTransposeSeparableLayer, self).build(input_shape)
@@ -39,6 +40,8 @@ class Conv2DTransposeSeparableLayer(tf.keras.layers.Layer):
 
     def invFilterImgX(self, image, tfmulval):
         img = tf.pad(image, [[0, 0], [0, 0], [3, 3], [0, 0]], "SYMMETRIC")
+        if img.shape[1] != tfmulval.shape[0]:
+            img = img[:, 0:img.shape[1] - 1, :, :]
         img = tf.math.multiply(img, tfmulval)
         filter, invfilter = setupFilts1D()
 
@@ -73,3 +76,7 @@ class Conv2DTransposeSeparableLayer(tf.keras.layers.Layer):
         outimg = outimg[:, 10:outimg.shape[1] - 9, :, :]
 
         return outimg
+
+    @input_shape.setter
+    def input_shape(self, value):
+        self._input_shape = value
