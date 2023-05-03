@@ -1,7 +1,7 @@
 from tkinter.ttk import *
 from tkinter import messagebox
 
-from GUI.utility.console import Console
+from GUI.utility import console
 
 
 class ProcessFrame(Frame):
@@ -20,7 +20,7 @@ class ProcessFrame(Frame):
         )
 
         # console
-        Console.initialise_widget(
+        console.initialise_widget(
             master=self,
             height=20,
             width=73

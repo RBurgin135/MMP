@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import tensorflow as tf
 
-from GUI.utility.console import Console
+from GUI.utility import console
 from Model.dataset import create_dataset
 from PCA_Wavelet_Codebase.build import build_1d, build_fully_connected, map_fully_connected
 from PCA_Wavelet_Codebase.utils import preprocess_dataset, pre_process_image
@@ -51,7 +51,7 @@ class Build(Process):
         # create dataset
         self.dataset = create_dataset(self.images_path, self.labels_path)
         if self.abort_check(): return
-        Console.write("dataset created")
+        console.write("dataset created")
 
         # build
         try:
@@ -64,14 +64,14 @@ class Build(Process):
             self.model.label_dataset = dataset[1]
         except Exception:
             self.abort(notify=True)
-        Console.write("model built successfully")
+        console.write("model built successfully")
 
         # configure buttons
         self.configure_process_screen_buttons(process_done=True)
 
     def build_model(self):
         tf.keras.backend.set_floatx('float64')
-        Console.write("preprocessing dataset")
+        console.write("preprocessing dataset")
         image_set = preprocess_dataset(self.dataset, 'image')
         label_set = preprocess_dataset(self.dataset, 'label')
         if self.abort_check(): return None, None, None
@@ -85,7 +85,7 @@ class Build(Process):
             flip=False,
             subtract_mean=True)
         if self.abort_check(): return None, None, None
-        Console.write("built image autoencoder")
+        console.write("built image autoencoder")
 
         # build label autoencoder
         label_head, label_inv_head = build_1d(
@@ -97,7 +97,7 @@ class Build(Process):
             subtract_mean=True
         )
         if self.abort_check(): return None, None, None
-        Console.write("built label autoencoder")
+        console.write("built label autoencoder")
 
         # build fully connected
         A, bias = build_fully_connected(
@@ -107,7 +107,7 @@ class Build(Process):
             label_set=label_set.take(self.count)
         )
         if self.abort_check(): return None, None, None
-        Console.write("built fully connected network")
+        console.write("built fully connected network")
 
         return (image_head, image_inv_head), (label_head, label_inv_head), (A, bias), (image_set, label_set)
 
@@ -145,11 +145,11 @@ class ApplyToDir(Process):
                 else:
                     reconstructed = np.uint8(np.squeeze(np.array(reconstructed*255)))
                     cv2.imwrite(self.output_path + x, reconstructed)
-                Console.write(f"applied to: {x}")
+                console.write(f"applied to: {x}")
             except Exception:
                 self.abort(notify=True)
 
-        Console.write("Process complete")
+        console.write("Process complete")
 
         # configure buttons
         self.configure_process_screen_buttons(process_done=True)
