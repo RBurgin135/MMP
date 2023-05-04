@@ -55,7 +55,7 @@ class TrainingScreen(Frame):
             pady=title_gap
         )
         # inputs
-        input_path = tk.StringVar(value='C:/Users/ritch/Documents/CODING/UNI/Third Year/Major Project/datasets/infill/images')
+        input_path = tk.StringVar()
         DirectoryPathFrame(
             master=content,
             controller=controller,
@@ -67,7 +67,7 @@ class TrainingScreen(Frame):
             pady=sub_gap
         )
         # labels
-        label_path = tk.StringVar(value='C:/Users/ritch/Documents/CODING/UNI/Third Year/Major Project/datasets/infill/labels')
+        label_path = tk.StringVar()
         DirectoryPathFrame(
             master=content,
             controller=controller,
@@ -80,7 +80,7 @@ class TrainingScreen(Frame):
         )
 
         # count
-        count = tk.StringVar(value=str(1))
+        count = tk.StringVar(value=str(10))
         Label(
             master=content,
             text="Amount from dataset:"
@@ -101,7 +101,7 @@ class TrainingScreen(Frame):
         )
 
         # layers
-        layers = tk.StringVar(value=str(1))
+        layers = tk.StringVar(value=str(5))
         Label(
             master=content,
             text="Number of layers:"

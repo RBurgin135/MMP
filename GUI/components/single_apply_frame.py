@@ -22,7 +22,7 @@ class SingleApplyFrame(Frame):
         )
 
         # file path frame
-        image_path = tk.StringVar(value='C:/Users/ritch/Documents/CODING/UNI/Third Year/Major Project/datasets/infill/labels/0.png')
+        image_path = tk.StringVar()
         FilePathFrame(
             master=self,
             controller=controller,

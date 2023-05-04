@@ -37,7 +37,7 @@ class Model:
 
     def create_new_model(self, variables):
         # extract from variables
-        self.name = variables[0].get()
+        self.name = "Unnamed Model" if variables[0].get() == "" else variables[0].get()
         images_path = variables[1].get()
         labels_path = variables[2].get()
         self.count = int(variables[3].get())
