@@ -81,9 +81,9 @@ polish:
         for apply to directory
         for apply to image
     add comments and documentation:
-        # screens
-        # components
-        # model
-        # pca wavelet
-    # check error checking
-    # remove placeholder auto-fills
+        screens
+        components
+        model
+        pca wavelet
+    check error checking
+    remove placeholder auto-fills

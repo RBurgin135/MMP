@@ -11,6 +11,21 @@ from PCA_Wavelet_Codebase.utils import pre_process_image
 
 
 class Model:
+    """
+    Model class to hold all information relating to the deep learning models
+    and their surrounding data.
+
+    Attributes:
+    controller (tkinter.TK): the root window.
+    name (str) : the name of the model.
+    count (int) : number of elements from the dataset.
+    layers (int) : number of layers in the model.
+    image_network (keras.models.Model, keras.models.Model) : the image network head and inverse head.
+    label_network (keras.models.Model, keras.models.Model) : the label network head and inverse head.
+    fully_connected (numpy.Tensor, numpy.Tensor) : the fully connected A and bias tensors.
+    image_dataset (tensorflow.datasets.Dataset) : image dataset object.
+    label_dataset (tensorflow.datasets.Dataset) : label dataset object.
+    """
     def __init__(self, controller):
         # info
         self.name = None
